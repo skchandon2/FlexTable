@@ -152,3 +152,12 @@
         }
         return jsonobj;
     }//(End Of) Function
+
+function headerSortHandler(e)
+{
+    e.preventDefault(); 
+    var curSortBy = $(this).data("sortbyfield");
+    console.log(curSortBy);
+    getData("#itemsList", curSortBy);
+
+}//(End Of) headerSortHandler
