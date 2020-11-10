@@ -96,3 +96,26 @@
         });
         
     }//(End Of) getData()
+    function createHeader($childElemsx, $hdrtrx)
+    {
+        $.each($childElemsx, function(keyx, valx){
+            var $curTemplateElement = $(valx);
+            var headerText = "";
+            if($curTemplateElement.data("sortyby") != null)
+            {
+                headerText = $("<a></a>")
+                    .attr("href", "#")
+                    .html($curTemplateElement.html())
+                    .click(headerSortHandler)
+                    .data("sortby", $curTemplateElement.data("sortyby"));
+                    ;
+            }
+            else
+            {
+                headerText = $curTemplateElement.html();
+            }
+
+            var $thcell1 = $("<th/>").html(headerText).addClass("text-primary");
+            $hdrtrx.append($thcell1);
+        });//(End Of) $.each
+    }//(End Of) Create Header
