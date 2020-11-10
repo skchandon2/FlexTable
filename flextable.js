@@ -74,3 +74,23 @@
             $hdrtrx.append($thcell1);
         });//(End Of) $.each
     }//(End Of) populateHeaderCells
+    
+    function createAndPopulateOneLine($tbody, $childElems, currentInputLine)
+        {
+            var $trx = $("<tr/>").data("rowid", currentInputLine.id).click(function(e){
+                    e.preventDefault(); 
+                    var $trc = $(e.target).parent();
+                    //console.log($(e.target));
+                    alert($trc.data("rowid"))
+                    });
+
+                $tbody.append($trx);
+                $.each($childElems, function(keyx, valx){
+                    var curfieldname = $(valx).data("jsonfieldname");
+
+                    jsonobj = getJsonValWithPossibleConcat(curfieldname, currentInputLine);
+                    var $thcell1x = $("<td/>").html(jsonobj);
+                    $trx.append($thcell1x);
+                });//(End Of) $.each
+
+        }//(End Of) function createAndPopulateOneLine()
