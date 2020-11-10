@@ -2,7 +2,8 @@
     header('Content-Type: application/json');
 
     $sortby = isset($_REQUEST["sortby"])? $_REQUEST["sortby"] : "age";
-
+    //echo json_encode($_REQUEST);
+    //return;
     class person
     {
         public $name = "";

@@ -12,8 +12,12 @@
     
     function getData(strTemplateElementID, paramSortBy="")
     {
-
-        $.get(_getDataURL, {sortby:paramSortBy})
+        var $templateElement = $(strTemplateElementID);
+        var sortByServerSideParamName = $templateElement.data("sortbyserversideparam");
+        
+        var getDataParams = {[sortByServerSideParamName+""]: paramSortBy}; 
+        //console.log(getDataParams)
+        $.get(_getDataURL, getDataParams)
             .done(function(datax) {
             console.log(datax);
             createTable(datax, strTemplateElementID);
@@ -157,7 +161,7 @@ function headerSortHandler(e)
 {
     e.preventDefault(); 
     var curSortBy = $(this).data("sortbyfield");
-    console.log(curSortBy);
+    //console.log(curSortBy);
     getData("#itemsList", curSortBy);
 
 }//(End Of) headerSortHandler
