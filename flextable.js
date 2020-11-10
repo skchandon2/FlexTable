@@ -56,13 +56,13 @@
         $.each($childElemsx, function(keyx, valx){
             var $curTemplateElement = $(valx);
             var headerText = "";
-            if($curTemplateElement.data("sortyby") != null)
+            if($curTemplateElement.data("sortby") != null)
             {
                 headerText = $("<a></a>")
                     .attr("href", "#")
                     .html($curTemplateElement.html())
                     .click(headerSortHandler)
-                    .data("sortby", $curTemplateElement.data("sortyby"));
+                    .data("sortbyfield", $curTemplateElement.data("sortby"));
                     ;
             }
             else
