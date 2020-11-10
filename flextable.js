@@ -124,3 +124,31 @@
         }
         return jsonobj;
     }//(End Of) getJsonValWithConcat()
+    function getJsonVal(curfieldname, currentInputLine)
+    {
+        var jsonobj = null;
+        //check if the current field name has a dot. if so that means there are nested fields
+        var curfieldnameSplitByDot = curfieldname.split(".");
+        if(curfieldnameSplitByDot.length>1) //if spllitting by dot, we have more than one element, that means there WAS a dot.
+        {
+            
+            for(j=0; j<curfieldnameSplitByDot.length; j++)
+            {
+                var splitFieldName = curfieldnameSplitByDot[j];
+                //console.log(jsonobj)
+                if(jsonobj == null)
+                {
+                    jsonobj = currentInputLine[splitFieldName];
+                }
+                else
+                {
+                    jsonobj = jsonobj[splitFieldName];
+                }
+            }
+        }
+        else
+        {
+            jsonobj =  currentInputLine[curfieldname];
+        }
+        return jsonobj;
+    }//(End Of) Function
