@@ -96,7 +96,7 @@
         });
         
     }//(End Of) getData()
-    function createHeader($childElemsx, $hdrtrx)
+    function populateHeaderCells($childElemsx, $hdrtrx)
     {
         $.each($childElemsx, function(keyx, valx){
             var $curTemplateElement = $(valx);
