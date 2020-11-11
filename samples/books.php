@@ -6,7 +6,17 @@
 
     include 'dbconn.php';
 
-    $sort = isset($_REQUEST['sort']) ? ($_REQUEST['sort'] != ""? $_REQUEST['sort']:'pubilshyear') : 'pubilshyear';    
+    $sort = 'pubilshyear';    
+
+    if(isset($_REQUEST['sort'])  )
+    {
+        if ($_REQUEST['sort'] != "") 
+        {
+            $sort = $_REQUEST['sort'];
+        }
+        
+    }
+    
 
     $result = array();
     
