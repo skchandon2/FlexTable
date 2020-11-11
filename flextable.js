@@ -25,7 +25,7 @@
             .fail(function(xhr, status, error) {
                 //Ajax request failed.
                 var errorMessage = xhr.status + ': ' + xhr.statusText
-                alert('Error - ' + errorMessage);
+                alert('Error - ' + error);
             })
             ;
     }  // end of function getData()
