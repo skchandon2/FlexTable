@@ -12,6 +12,6 @@
     $rs = mysql_query("select * from scbooks order by $sort") or die (mysql_error());
     
 
-    echo json_encode($result);
+    echo json_encode($rs);
     include 'dbclose.php';
 ?>
