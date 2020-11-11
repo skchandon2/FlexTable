@@ -27,12 +27,11 @@
 
 <body>
     <!--This is the body text-->
-    <ul id="itemsList" data-getdataurl = "persons.php" data-sortbyserversideparam="sortby">
+    <ul id="itemsList" data-getdataurl = "books.php" data-sortbyserversideparam="sort">
         
-        <li data-jsonfieldname="name" data-sortby="name">Name</li>
-        <li data-jsonfieldname="age" data-sortby="age">Age</li>
-        <li data-jsonfieldname="address.street+address.province+address.country">Full Address</li>
-        <li data-jsonfieldname="department" data-sortby="department">Department</li>
+        <li data-jsonfieldname="authorname" data-sortby="authorname">Author Name</li>
+        <li data-jsonfieldname="bookname" data-sortby="bookname">Book Name</li>
+
     </ul>
 
     <div id="dynamicTable"></div>
