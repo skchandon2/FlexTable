@@ -20,9 +20,14 @@
         $.get(_getDataURL, getDataParams)
             .done(function(datax) {
             console.log(datax);
-            createTable(datax, strTemplateElementID);
-            
-        });
+            createTable(datax, strTemplateElementID);            
+            })
+            .fail(function(xhr, status, error) {
+                //Ajax request failed.
+                var errorMessage = xhr.status + ': ' + xhr.statusText
+                alert('Error - ' + errorMessage);
+            })
+            ;
     }  // end of function getData()
 
     function createTable(inputData, strTemplateElementID) {
