@@ -6,4 +6,7 @@ $password = "";
 $hostname = "localhost";
 $schemaname="pasternDB";
 
+if( file_exists("secrets.php") && is_readable("secrets.php")) {
+    include("secrets.php");
+}
 ?>
