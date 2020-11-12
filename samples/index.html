@@ -27,7 +27,7 @@
 
 <body>
     <!--This is the body text-->
-    <ul id="itemsList" data-getdataurl = "books.php" data-sortbyserversideparam="sort">
+    <ul id="itemsList" class="flextable" data-getdataurl = "books.php" data-sortbyserversideparam="sort" data-targetid="dynamicTable">
         
         <li data-jsonfieldname="authorname" data-sortby="authorname">Name</li>
         <li data-jsonfieldname="bookname" data-sortby="bookname">Age</li>
@@ -36,6 +36,17 @@
     </ul>
 
     <div id="dynamicTable"></div>
+
+    <ul id="itemsList2" class="flextable" data-getdataurl = "nntask.php" data-sortbyserversideparam="sort" data-targetid="dynamicTable2">
+        
+        <li data-jsonfieldname="taskname" data-sortby="taskname">Task</li>
+        <li data-jsonfieldname="itemname" data-sortby="itemname">Item</li>
+        <li data-jsonfieldname="tasklength" data-sortby="tasklength">Length</li>
+        
+    </ul>
+    <div id="dynamicTable2"></div>
+
+
     <script type="text/javascript" src="../flextable.js"></script>
     </body>
     

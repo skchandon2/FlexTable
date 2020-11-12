@@ -1,26 +1,34 @@
     var row_count = 10;
     var cell_count = 4;
-    var _getDataURL = "";
+    //var _getDataURL = "";
     $(document).ready(function () {  // calling ready function on document (the entire page); calling an anonymous function inside the ready function; calling two functions inside anonymous function
         
-
-        _getDataURL = $("#itemsList").data("getdataurl");
-        getData("#itemsList");
+        var arrFlextableTemplates = $(".flextable");
+        $.each(arrFlextableTemplates, function(i, templatex){
+            
+            //console.log($(templatex).attr("id"));
+            getData($(templatex).attr("id"));
+        });
+        //_getDataURL = $("#itemsList").data("getdataurl");
+        //getData("#itemsList");
         
         
     });
     
     function getData(strTemplateElementID, paramSortBy="")
     {
-        var $templateElement = $(strTemplateElementID);
-        var sortByServerSideParamName = $templateElement.data("sortbyserversideparam");
         
+        var templateElementId = "#" + strTemplateElementID;
+
+        var $templateElementObj = $(templateElementId);
+        var sortByServerSideParamName = $templateElementObj.data("sortbyserversideparam");
+        var curUrl = $templateElementObj.data("getdataurl");
         var getDataParams = {[sortByServerSideParamName+""]: paramSortBy}; 
         //console.log(getDataParams)
-        $.get(_getDataURL, getDataParams)
+        $.get(curUrl, getDataParams)
             .done(function(datax) {
-            console.log(datax);
-            createTable(datax, strTemplateElementID);            
+            //console.log(datax);
+            createTable(datax, templateElementId);            
             })
             .fail(function(xhr, status, error) {
                 //Ajax request failed.
@@ -32,7 +40,11 @@
 
     function createTable(inputData, strTemplateElementID) {
         var $templateElement = $(strTemplateElementID);
-        $("#dynamicTable").empty();
+        //console.log($templateElement);
+        var targetElemId = $templateElement.data("targetid");
+        var $targetElemObj = $("#" + targetElemId);
+        //console.log(targetElemId);
+        $targetElemObj.empty();
         $templateElement.hide();
         var $childElems = $templateElement.find("li");
         
@@ -57,7 +69,7 @@
         }//(End Of) for (var r=0; r<5; r++)...
 
 
-        $("#dynamicTable").append($tablex);
+        $targetElemObj.append($tablex);
     }//(End Of Function createTable
         
     function populateHeaderCells($childElemsx, $hdrtrx)
@@ -71,7 +83,7 @@
                     .attr("href", "#")
                     .html($curTemplateElement.html())
                     .click(headerSortHandler)
-                    .data("sortbyfield", $curTemplateElement.data("sortby"));
+                    .data({"sortbyfield": $curTemplateElement.data("sortby"), "templateid": $childElemsx.parent().attr("id")});
                     ;
             }
             else
@@ -166,7 +178,8 @@ function headerSortHandler(e)
 {
     e.preventDefault(); 
     var curSortBy = $(this).data("sortbyfield");
+    var curTemplateId = $(this).data("templateid");
     //console.log(curSortBy);
-    getData("#itemsList", curSortBy);
+    getData(curTemplateId, curSortBy);
 
 }//(End Of) headerSortHandler
