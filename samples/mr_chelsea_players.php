@@ -6,7 +6,7 @@
 try{
     include 'dbconn.php';
 
-    $sort = 'age';    
+    $sort = 'name';    
 
     if(isset($_REQUEST['sort'])  )
     {

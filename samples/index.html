@@ -54,7 +54,15 @@
     </ul>
     <div id="dynamicTable2"></div>
 
-    <ul id="itemsList3" class="flextable" data-getdataurl = "mr_chelsea_players.php" data-sortbyserversideparam="sort" data-targetid="dynamicTable3">
+    <ul  id="itemsList3" class="flextable"
+         data-getdataurl = "mr_chelsea_players.php"
+         data-sortbyserversideparam="sort"
+         data-targetid="dynamicTable3"
+         data-pagesize="5"
+         data-pagesizeserversideparam="pagesize"
+         data-currentpageserversideparam="curpage"
+         data-defaultsortbyfield="name"
+         >
         
         <li data-jsonfieldname="name" data-sortby="name">Name</li>
         <li data-jsonfieldname="nationality" data-sortby="nationality">Nationality</li>
