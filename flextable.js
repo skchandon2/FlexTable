@@ -15,6 +15,7 @@
             $templateRootObj.data("currentpagenumber", currentPageNumber);
             //console.log($(templatex).attr("id"));
             getData(templateRootId, defaultSortByField, pageSize, currentPageNumber, pageSizeServerSideParam, curPageServerSideParam);
+            $templateRootObj.data("currentsortbyfield", defaultSortByField);
         });
         //_getDataURL = $("#itemsList").data("getdataurl");
         //getData("#itemsList");
