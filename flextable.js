@@ -205,7 +205,7 @@ function headerSortHandler(e)
     var curPageNumber = $templateRootObj.data("currentpagenumber");
     console.log(pageSizeServerSideParam);    
     getData(curTemplateId, curSortBy, pageSize, curPageNumber, pageSizeServerSideParam, curPageServerSideParam);
-    $templateRootObj.data("defaultsortbyfield", curSortBy);
+    $templateRootObj.data("currentsortbyfield", curSortBy);
 }//(End Of) Function headerSortHandler
 
 function createPaginationButtons(paramTargetElemId, paramTemplateElementId)
@@ -226,8 +226,8 @@ function ChangePage(e)
     var $curBtn = $(e.target);
     //console.log($curBtn.data())
     var changeType = $curBtn.data("type");
-    var templateIdWithHash = $curBtn.data("templateid");
-    var $templateRootObj = $("#" + templateIdWithHash);
+    var templateIdWithNoHash = $curBtn.data("templateid");
+    var $templateRootObj = $("#" + templateIdWithNoHash);
     console.log($templateRootObj.data("currentpagenumber"))
     var intCurrentPageNumber = parseInt($templateRootObj.data("currentpagenumber"));
     
@@ -251,9 +251,9 @@ function ChangePage(e)
         var pageSizeServerSideParam = $templateRootObj.data("pagesizeserversideparam");
         var curPageServerSideParam = $templateRootObj.data("currentpageserversideparam");
         //var curPageNumber = $templateRootObj.data("currentpagenumber");
-        var curSortBy = $templateRootObj.data("defaultsortbyfield");//whatever the current value of default is
+        var curSortBy = $templateRootObj.data("currentsortbyfield");//whatever the current value of default is
         //console.log("Changing page: ");    
-        getData(templateIdWithHash, curSortBy, pageSize, intCurrentPageNumber, pageSizeServerSideParam, curPageServerSideParam);
+        getData(templateIdWithNoHash, curSortBy, pageSize, intCurrentPageNumber, pageSizeServerSideParam, curPageServerSideParam);
         $templateRootObj.data("currentpagenumber", intCurrentPageNumber);
     
     }
