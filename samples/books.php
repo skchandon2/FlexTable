@@ -7,6 +7,9 @@ try{
     include 'dbconn.php';
 
     $sort = 'pubilshyear';    
+    $pagesizeStr = '5';
+    $curpageNumberStr = '1';
+
 
     if(isset($_REQUEST['sort'])  )
     {
@@ -17,10 +20,18 @@ try{
         
     }
     
+    $pagesizeStr = $_REQUEST["pagesize"];
+    $curpageNumberStr = $_REQUEST["curpage"];
+
+    $pagesizeInt = intval($pagesizeStr);
+    $curpageNumberInt = intval($curpageNumberStr);
+
+    $recordStartIndex = ($curpageNumberInt - 1) * $pagesizeInt;
+    
 
     $result = array();
     
-    $recordset = mysql_query("select * from scbooks order by $sort") or die ("{ error: " . mysql_error() . "}");
+    $recordset = mysql_query("select * from scbooks order by $sort limit $recordStartIndex, $pagesizeInt") or die ("{ error: " . mysql_error() . "}");
     while($row = mysql_fetch_object($recordset)){
         array_push($result, $row);
     }
