@@ -227,7 +227,8 @@ function ChangePage(e)
     //console.log($curBtn.data())
     var changeType = $curBtn.data("type");
     var templateIdWithHash = $curBtn.data("templateid");
-    var $templateRootObj = $(templateIdWithHash);
+    var $templateRootObj = $("#" + templateIdWithHash);
+    console.log($templateRootObj.data("currentpagenumber"))
     var intCurrentPageNumber = parseInt($templateRootObj.data("currentpagenumber"));
     
     console.log(intCurrentPageNumber)
@@ -249,10 +250,11 @@ function ChangePage(e)
         var pageSize = $templateRootObj.data("pagesize");
         var pageSizeServerSideParam = $templateRootObj.data("pagesizeserversideparam");
         var curPageServerSideParam = $templateRootObj.data("currentpageserversideparam");
-        var curPageNumber = $templateRootObj.data("currentpagenumber");
+        //var curPageNumber = $templateRootObj.data("currentpagenumber");
         var curSortBy = $templateRootObj.data("defaultsortbyfield");//whatever the current value of default is
-        console.log(pageSizeServerSideParam);    
-        getData(templateIdWithHash, curSortBy, pageSize, curPageNumber, pageSizeServerSideParam, curPageServerSideParam);
+        //console.log("Changing page: ");    
+        getData(templateIdWithHash, curSortBy, pageSize, intCurrentPageNumber, pageSizeServerSideParam, curPageServerSideParam);
+        $templateRootObj.data("currentpagenumber", intCurrentPageNumber);
     
     }
 
