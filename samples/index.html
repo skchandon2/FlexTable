@@ -45,7 +45,16 @@
 
     <div id="dynamicTable"></div>
 
-    <ul id="itemsList2" class="flextable" data-getdataurl = "nntask.php" data-sortbyserversideparam="sort" data-targetid="dynamicTable2">
+    <ul id="itemsList2" class="flextable" 
+        data-getdataurl = "nntask.php" 
+        data-sortbyserversideparam="sort" 
+        data-targetid="dynamicTable2"
+        data-pagesize="5"
+        data-pagesizeserversideparam="pagesize"
+        data-currentpageserversideparam="curpage"
+        data-defaultsortbyfield="taskname"
+
+        >
         
         <li data-jsonfieldname="taskname" data-sortby="taskname">Task</li>
         <li data-jsonfieldname="itemname" data-sortby="itemname">Item</li>
