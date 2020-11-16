@@ -27,7 +27,9 @@
 <body>
     <!--This is the body text-->
     <ul id="itemsList" class="flextable" 
-        data-getdataurl = "books.php" 
+        data-getdataurl = "books.php"
+        data-getdatanode = "this.Records" 
+        data-getdatatotal = "this.TotalSize"
         data-sortbyserversideparam="sort" 
         data-targetid="dynamicTable" 
         data-pagesize="5"

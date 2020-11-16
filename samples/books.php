@@ -20,23 +20,31 @@ try{
         
     }
     
-    $pagesizeStr = $_REQUEST["pagesize"];
-    $curpageNumberStr = $_REQUEST["curpage"];
+    if(isset($_REQUEST["pagesize"]))
+    {
+        $pagesizeStr = $_REQUEST["pagesize"];
+    }
+
+    if(isset($_REQUEST["curpage"]))
+    {
+        $curpageNumberStr = $_REQUEST["curpage"];
+    }
 
     $pagesizeInt = intval($pagesizeStr);
     $curpageNumberInt = intval($curpageNumberStr);
 
     $recordStartIndex = ($curpageNumberInt - 1) * $pagesizeInt;
     
-
+    $finalResult = array();
     $result = array();
     
     $recordset = mysql_query("select * from scbooks order by $sort limit $recordStartIndex, $pagesizeInt") or die ("{ error: " . mysql_error() . "}");
     while($row = mysql_fetch_object($recordset)){
         array_push($result, $row);
     }
-
-    echo json_encode($result);
+    $finalResult["Records"] = $result;
+    $finalResult["TotalRecordsCount"] = 10;
+    echo json_encode($finalResult);
     include 'dbclose.php';
 }
 catch(Exception $ex)
