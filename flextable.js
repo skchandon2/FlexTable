@@ -263,7 +263,7 @@ function ChangePage(e)
         var pageSizeServerSideParam = curTemplateData.PageSizeServerSideParam; //$templateRootObj.data("pagesizeserversideparam");
         var curPageServerSideParam = curTemplateData.CurPageServerSideParam; //$templateRootObj.data("currentpageserversideparam");
         //var curPageNumber = $templateRootObj.data("currentpagenumber");
-        var curSortBy = curTemplateData.curSortBy; //$templateRootObj.data("currentsortbyfield");//whatever the current value of default is
+        var curSortBy = curTemplateData.CurSortByField; //$templateRootObj.data("currentsortbyfield");//whatever the current value of default is
         //console.log("Changing page: ");    
         getData(templateIdWithNoHash, curSortBy, pageSize, intCurrentPageNumber, pageSizeServerSideParam, curPageServerSideParam);
         $templateRootObj.data("currentpagenumber", intCurrentPageNumber);
