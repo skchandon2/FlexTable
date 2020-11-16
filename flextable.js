@@ -89,9 +89,13 @@
             
 
         }//(End Of) for (var r=0; r<5; r++)...
+        var $divRow = $("<div/>").addClass("row");
+        var $divColm = $("<div/>").addClass("col-sm-12");
+        $divColm.append($tablex);
+        $divRow.append($divColm);
+        
 
-
-        $targetElemObj.append($tablex);
+        $targetElemObj.append($divRow);
 
         //create a row of pagination buttons
         createPaginationButtons(targetElemId, strTemplateElementID);
