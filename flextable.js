@@ -284,6 +284,10 @@ function GetDataFromTemplateRoot($paramTemplateRootObject)
     var curPageNumber = $paramTemplateRootObject.data("currentpagenumber")
     var sortByServerSideParam = $paramTemplateRootObject.data("sortbyserversideparam")
     var getDataUrl = $paramTemplateRootObject.data("getdataurl")
+    var getDataNode = $paramTemplateRootObject.data("getdatanode");
+    var getDataTotal = $paramTemplateRootObject.data("getdatatotal");
+    
+
     return {
         PageSize: pageSize, 
         PageSizeServerSideParam: pageSizeServerSideParam, 
@@ -292,7 +296,9 @@ function GetDataFromTemplateRoot($paramTemplateRootObject)
         CurSortByField: curSortByField,
         CurPageNumber: curPageNumber,
         SortByServerSideParam: sortByServerSideParam,
-        GetDataUrl: getDataUrl
+        GetDataUrl: getDataUrl,
+        GetDataNode: getDataNode,
+        GetDataTotal: getDataTotal
     }
 
 }//(End Of) Function GetDataFromTemplateRoot

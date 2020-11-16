@@ -35,15 +35,21 @@ try{
 
     $recordStartIndex = ($curpageNumberInt - 1) * $pagesizeInt;
     
-    $finalResult = array();
+    $rs = mysql_query("select count(*) from scbooks");
+    $totalCountsRow = mysql_fetch_row($rs);
+    $totalCountVal = $totalCountsRow[0];
+    //echo $totalCountVal;
+
+    //$finalResult = array();
     $result = array();
     
     $recordset = mysql_query("select * from scbooks order by $sort limit $recordStartIndex, $pagesizeInt") or die ("{ error: " . mysql_error() . "}");
     while($row = mysql_fetch_object($recordset)){
         array_push($result, $row);
     }
-    $finalResult["Records"] = $result;
-    $finalResult["TotalRecordsCount"] = 10;
+    $finalResult = new stdClass();
+    $finalResult->Records = $result;
+    $finalResult->TotalRowCount = $totalCountVal;
     echo json_encode($finalResult);
     include 'dbclose.php';
 }
