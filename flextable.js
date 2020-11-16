@@ -7,12 +7,16 @@
         $.each(arrFlextableTemplates, function(i, templatex){
             var $templateRootObj = $(templatex);
             var templateRootId = $templateRootObj.attr("id");
-            var pageSize = $templateRootObj.data("pagesize");
-            var pageSizeServerSideParam = $templateRootObj.data("pagesizeserversideparam");
-            var curPageServerSideParam = $templateRootObj.data("currentpageserversideparam");
-            var defaultSortByField = $templateRootObj.data("defaultsortbyfield");
             var currentPageNumber = 1;
             $templateRootObj.data("currentpagenumber", currentPageNumber);
+
+            var curTemplateData = GetDataFromTemplateRoot($templateRootObj);
+
+            var pageSize = curTemplateData.PageSize ;//$templateRootObj.data("pagesize");
+            var pageSizeServerSideParam = curTemplateData.PageSizeServerSideParam;//$templateRootObj.data("pagesizeserversideparam");
+            var curPageServerSideParam = curTemplateData.CurPageServerSideParam;//$templateRootObj.data("currentpageserversideparam");
+            var defaultSortByField = curTemplateData.DefaultSortByField;//$templateRootObj.data("defaultsortbyfield");
+
             //console.log($(templatex).attr("id"));
             getData(templateRootId, defaultSortByField, pageSize, currentPageNumber, pageSizeServerSideParam, curPageServerSideParam);
             $templateRootObj.data("currentsortbyfield", defaultSortByField);
@@ -200,10 +204,11 @@ function headerSortHandler(e)
     var curSortBy = $(this).data("sortbyfield");
     var curTemplateId = $(this).data("templateid");
     var $templateRootObj = $("#" + curTemplateId);
-    var pageSize = $templateRootObj.data("pagesize");
-    var pageSizeServerSideParam = $templateRootObj.data("pagesizeserversideparam");
-    var curPageServerSideParam = $templateRootObj.data("currentpageserversideparam");
-    var curPageNumber = $templateRootObj.data("currentpagenumber");
+    var curTemplateData = GetDataFromTemplateRoot($templateRootObj);
+    var pageSize = curTemplateData.PageSize; //$templateRootObj.data("pagesize");
+    var pageSizeServerSideParam = curTemplateData.PageSizeServerSideParam; //$templateRootObj.data("pagesizeserversideparam");
+    var curPageServerSideParam = curTemplateData.CurPageServerSideParam; //$templateRootObj.data("currentpageserversideparam");
+    var curPageNumber = curTemplateData.CurPageNumber; //$templateRootObj.data("currentpagenumber");
     console.log(pageSizeServerSideParam);    
     getData(curTemplateId, curSortBy, pageSize, curPageNumber, pageSizeServerSideParam, curPageServerSideParam);
     $templateRootObj.data("currentsortbyfield", curSortBy);
@@ -229,8 +234,9 @@ function ChangePage(e)
     var changeType = $curBtn.data("type");
     var templateIdWithNoHash = $curBtn.data("templateid");
     var $templateRootObj = $("#" + templateIdWithNoHash);
-    console.log($templateRootObj.data("currentpagenumber"))
-    var intCurrentPageNumber = parseInt($templateRootObj.data("currentpagenumber"));
+    var curTemplateData = GetDataFromTemplateRoot($templateRootObj);
+    //console.log($templateRootObj.data("currentpagenumber"))
+    var intCurrentPageNumber = parseInt(curTemplateData.CurPageNumber);//parseInt($templateRootObj.data("currentpagenumber"));
     
     console.log(intCurrentPageNumber)
     if(changeType=="prev")
@@ -248,11 +254,11 @@ function ChangePage(e)
     }
     else
     {
-        var pageSize = $templateRootObj.data("pagesize");
-        var pageSizeServerSideParam = $templateRootObj.data("pagesizeserversideparam");
-        var curPageServerSideParam = $templateRootObj.data("currentpageserversideparam");
+        var pageSize = curTemplateData.PageSize; //$templateRootObj.data("pagesize");
+        var pageSizeServerSideParam = curTemplateData.PageSizeServerSideParam; //$templateRootObj.data("pagesizeserversideparam");
+        var curPageServerSideParam = curTemplateData.CurPageServerSideParam; //$templateRootObj.data("currentpageserversideparam");
         //var curPageNumber = $templateRootObj.data("currentpagenumber");
-        var curSortBy = $templateRootObj.data("currentsortbyfield");//whatever the current value of default is
+        var curSortBy = curTemplateData.curSortBy; //$templateRootObj.data("currentsortbyfield");//whatever the current value of default is
         //console.log("Changing page: ");    
         getData(templateIdWithNoHash, curSortBy, pageSize, intCurrentPageNumber, pageSizeServerSideParam, curPageServerSideParam);
         $templateRootObj.data("currentpagenumber", intCurrentPageNumber);
@@ -262,3 +268,22 @@ function ChangePage(e)
 
 
 }//(End Of) Function ChangePage
+
+function GetDataFromTemplateRoot($paramTemplateRootObject)
+{
+    var pageSize = $paramTemplateRootObject.data("pagesize");
+    var pageSizeServerSideParam = $paramTemplateRootObject.data("pagesizeserversideparam");
+    var curPageServerSideParam = $paramTemplateRootObject.data("currentpageserversideparam");
+    var defaultSortByField = $paramTemplateRootObject.data("defaultsortbyfield");
+    var curSortByField = $paramTemplateRootObject.data("currentsortbyfield")
+    var curPageNumber = $paramTemplateRootObject.data("currentpagenumber")
+    return {
+        PageSize: pageSize, 
+        PageSizeServerSideParam: pageSizeServerSideParam, 
+        CurPageServerSideParam: curPageServerSideParam, 
+        DefaultSortByField: defaultSortByField,
+        CurSortByField: curSortByField,
+        CurPageNumber: curPageNumber
+    }
+
+}//(End Of) Function GetDataFromTemplateRoot
