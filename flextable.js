@@ -33,8 +33,9 @@
         var templateElementId = "#" + strTemplateElementID;
 
         var $templateElementObj = $(templateElementId);
-        var sortByServerSideParamName = $templateElementObj.data("sortbyserversideparam");
-        var curUrl = $templateElementObj.data("getdataurl");
+        var curTemplateData = GetDataFromTemplateRoot($templateElementObj);
+        var sortByServerSideParamName = curTemplateData.sortByServerSideParam;
+        var curUrl = curTemplateData.GetDataUrl;
         var curPagesize = paramPageSize;
         var getDataParams = {[sortByServerSideParamName+""]: paramSortBy}; 
         if(paramPageSizeServerSideVar!="")
@@ -277,13 +278,17 @@ function GetDataFromTemplateRoot($paramTemplateRootObject)
     var defaultSortByField = $paramTemplateRootObject.data("defaultsortbyfield");
     var curSortByField = $paramTemplateRootObject.data("currentsortbyfield")
     var curPageNumber = $paramTemplateRootObject.data("currentpagenumber")
+    var sortByServerSideParam = $paramTemplateRootObject.data("sortbyserversideparam")
+    var getdataurl = $paramTemplateRootObject.data("getdataurl")
     return {
         PageSize: pageSize, 
         PageSizeServerSideParam: pageSizeServerSideParam, 
         CurPageServerSideParam: curPageServerSideParam, 
         DefaultSortByField: defaultSortByField,
         CurSortByField: curSortByField,
-        CurPageNumber: curPageNumber
+        CurPageNumber: curPageNumber,
+        SortByServerSideParam: sortByServerSideParam,
+        GetDataUrl: getdataurl
     }
 
 }//(End Of) Function GetDataFromTemplateRoot
