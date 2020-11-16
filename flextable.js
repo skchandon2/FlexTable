@@ -216,14 +216,14 @@ function headerSortHandler(e)
 
 function createPaginationButtons(paramTargetElemId, paramTemplateElementId)
 {
-    var $templateElement = $("#" + paramTargetElemId);
+    var $btnTargetElementDivObj = $("#" + paramTargetElemId);
     var $btnPrev = $("<button/>").html("<").addClass("btn btn-primary").data({"type":"prev", "templateid": paramTemplateElementId}).click(ChangePage);
     var $btnNext = $("<button/>").html(">").addClass("btn btn-primary").data({"type":"next", "templateid": paramTemplateElementId}).click(ChangePage);
     var $btnRow = $("<div/>").addClass("row");
     var $btnCell1 = $("<div/>").addClass("col-sm-6").append($btnPrev);
     var $btnCell2 = $("<div/>").addClass("col-sm-6").append($btnNext).css("text-align", "right");
     $btnRow.append($btnCell1).append($btnCell2);
-    $templateElement.append($btnRow);
+    $btnTargetElementDivObj.append($btnRow);
 }//(End Of) Function createPaginationButtons
 
 function ChangePage(e)
