@@ -34,7 +34,7 @@
 
         var $templateElementObj = $(templateElementId);
         var curTemplateData = GetDataFromTemplateRoot($templateElementObj);
-        var sortByServerSideParamName = curTemplateData.sortByServerSideParam;
+        var sortByServerSideParamName = curTemplateData.SortByServerSideParam;
         var curUrl = curTemplateData.GetDataUrl;
         var curPagesize = paramPageSize;
         var getDataParams = {[sortByServerSideParamName+""]: paramSortBy}; 
