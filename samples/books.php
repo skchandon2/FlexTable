@@ -48,7 +48,8 @@ try{
         array_push($result, $row);
     }
     $finalResult = new stdClass();
-    $finalResult->Records = $result;
+    $finalResult->Records = new stdClass();
+    $finalResult->Records->Details = $result;
     $finalResult->TotalRowCount = $totalCountVal;
     echo json_encode($finalResult);
     include 'dbclose.php';

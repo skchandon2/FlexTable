@@ -78,14 +78,32 @@
         $tablex.append($tbody);
         var curInputData = {};
         var getDataNodePath = curTemplateData.GetDataNodePath;
-        if(getDataNodePath==null || getDataNodePath=="this")
+        console.log(paramInputJSONObject);
+        if(getDataNodePath==null || getDataNodePath=="root")
         {
             curInputData = paramInputJSONObject;
         }
         else
         {
+            //console.log(paramInputJSONObject)
             var curDataPathSplit = getDataNodePath.split(".");
-            curInputData = paramInputJSONObject[curDataPathSplit[1]];
+            //console.log(curDataPathSplit)
+            var jsonobj = null;
+            for(j=1; j<curDataPathSplit.length; j++)
+            {
+                //console.log(jsonobj)
+                var splitFieldName = curDataPathSplit[j];                
+                if(jsonobj == null)
+                {
+                    jsonobj = paramInputJSONObject[splitFieldName];
+                }
+                else
+                {
+                    jsonobj = jsonobj[splitFieldName];
+                }
+            }
+            //console.log(jsonobj)
+            curInputData = jsonobj;
         }
         row_count = curInputData.length;
         
