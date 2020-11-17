@@ -60,22 +60,34 @@
             ;
     }  // end of function getData()
 
-    function createTable(inputData, strTemplateElementID) {
-        var $templateElement = $("#" + strTemplateElementID);
+    function createTable(paramInputJSONObject, paramStrTemplateRootId) {
+        var $templateElement = $("#" + paramStrTemplateRootId);
         //console.log($templateElement);
-        var targetElemId = $templateElement.data("targetid");
+        var curTemplateData = GetDataFromTemplateRoot($templateElement);
+        var targetElemId = curTemplateData.TargetElementId;
         var $targetElemObj = $("#" + targetElemId);
         //console.log(targetElemId);
         $targetElemObj.empty();
         $templateElement.hide();
-        var $childElems = $templateElement.find("li");
+        var $childElems = curTemplateData.ArrChildElements; //$templateElement.find("li");
         
         var $tablex = $("<table/>").addClass("table table-striped table-bordered table-hover");
         var $thead = $("<thead/>");
         var $tbody = $("<tbody/>");
         $tablex.append($thead);
         $tablex.append($tbody);
-        row_count = inputData.length;
+        var curInputData = {};
+        var getDataNodePath = curTemplateData.GetDataNodePath;
+        if(getDataNodePath==null || getDataNodePath=="this")
+        {
+            curInputData = paramInputJSONObject;
+        }
+        else
+        {
+            var curDataPathSplit = getDataNodePath.split(".");
+            curInputData = paramInputJSONObject[curDataPathSplit[1]];
+        }
+        row_count = curInputData.length;
         
         var $hdrtr =  $("<tr/>");
         $thead.append($hdrtr);
@@ -84,7 +96,7 @@
 
 
         for (var r = 0; r < row_count; r++) {
-            var currentInputLine = inputData[r];
+            var currentInputLine = curInputData[r];
             createAndPopulateOneLine($tbody, $childElems, currentInputLine);
             
 
@@ -98,7 +110,7 @@
         $targetElemObj.append($divRow);
 
         //create a row of pagination buttons
-        createPaginationButtons(targetElemId, strTemplateElementID);
+        createPaginationButtons(targetElemId, paramStrTemplateRootId);
     }//(End Of Function createTable
         
     function populateHeaderCells($childElemsx, $hdrtrx)
@@ -284,8 +296,10 @@ function GetDataFromTemplateRoot($paramTemplateRootObject)
     var curPageNumber = $paramTemplateRootObject.data("currentpagenumber")
     var sortByServerSideParam = $paramTemplateRootObject.data("sortbyserversideparam")
     var getDataUrl = $paramTemplateRootObject.data("getdataurl")
-    var getDataNode = $paramTemplateRootObject.data("getdatanode");
-    var getDataTotal = $paramTemplateRootObject.data("getdatatotal");
+    var getDataNode = $paramTemplateRootObject.data("getdatanodepath");
+    var getDataTotal = $paramTemplateRootObject.data("getdatatotalpath");
+    var targetElementId = $paramTemplateRootObject.data("targetid");
+    var arrChildElements = $paramTemplateRootObject.find("li");
     
 
     return {
@@ -297,8 +311,10 @@ function GetDataFromTemplateRoot($paramTemplateRootObject)
         CurPageNumber: curPageNumber,
         SortByServerSideParam: sortByServerSideParam,
         GetDataUrl: getDataUrl,
-        GetDataNode: getDataNode,
-        GetDataTotal: getDataTotal
+        GetDataNodePath: getDataNode,
+        GetDataTotalPath: getDataTotal,
+        TargetElementId: targetElementId,
+        ArrChildElements: arrChildElements
     }
 
 }//(End Of) Function GetDataFromTemplateRoot
