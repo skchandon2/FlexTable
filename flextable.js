@@ -85,25 +85,7 @@
         }
         else
         {
-            //console.log(paramInputJSONObject)
-            var curDataPathSplit = getDataNodePath.split(".");
-            //console.log(curDataPathSplit)
-            var jsonobj = null;
-            for(j=1; j<curDataPathSplit.length; j++)
-            {
-                //console.log(jsonobj)
-                var splitFieldName = curDataPathSplit[j];                
-                if(jsonobj == null)
-                {
-                    jsonobj = paramInputJSONObject[splitFieldName];
-                }
-                else
-                {
-                    jsonobj = jsonobj[splitFieldName];
-                }
-            }
-            //console.log(jsonobj)
-            curInputData = jsonobj;
+            curInputData = getJsonVal(getDataNodePath, paramInputJSONObject, 1);
         }
         row_count = curInputData.length;
         
@@ -204,7 +186,7 @@
         }
         return jsonobj;
     }//(End Of) getJsonValWithConcat()
-    function getJsonVal(curfieldname, currentInputLine)
+    function getJsonVal(curfieldname, currentInputLine, startIndex=0)
     {
         var jsonobj = null;
         //check if the current field name has a dot. if so that means there are nested fields
@@ -336,3 +318,5 @@ function GetDataFromTemplateRoot($paramTemplateRootObject)
     }
 
 }//(End Of) Function GetDataFromTemplateRoot
+
+
