@@ -296,8 +296,8 @@ function GetDataFromTemplateRoot($paramTemplateRootObject)
     var curPageNumber = $paramTemplateRootObject.data("currentpagenumber")
     var sortByServerSideParam = $paramTemplateRootObject.data("sortbyserversideparam")
     var getDataUrl = $paramTemplateRootObject.data("getdataurl")
-    var getDataNode = $paramTemplateRootObject.data("getdatanodepath");
-    var getDataTotal = $paramTemplateRootObject.data("getdatatotalpath");
+    var getDataNode = $paramTemplateRootObject.data("nodepath");
+    var getDataTotal = $paramTemplateRootObject.data("totalrowcountpath");
     var targetElementId = $paramTemplateRootObject.data("targetid");
     var arrChildElements = $paramTemplateRootObject.find("li");
     
