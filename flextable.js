@@ -77,7 +77,9 @@
         $tablex.append($thead);
         $tablex.append($tbody);
         var curInputData = {};
+        var totalRowCountVal = {};
         var getDataNodePath = curTemplateData.GetDataNodePath;
+        var getTotalRowCountPath = curTemplateData.GetDataTotalPath;
         console.log(paramInputJSONObject);
         if(getDataNodePath==null || getDataNodePath=="root")
         {
@@ -87,6 +89,18 @@
         {
             curInputData = getJsonVal(getDataNodePath, paramInputJSONObject, 1);
         }
+
+        if(getTotalRowCountPath==null)
+        {
+            totalRowCountVal = -1;
+        }
+        else
+        {
+            totalRowCountVal = getJsonVal(getTotalRowCountPath, paramInputJSONObject, 1);
+        }
+        //console.log(totalRowCountVal)
+        $templateElement.data("totalrowcount", totalRowCountVal);
+
         row_count = curInputData.length;
         
         var $hdrtr =  $("<tr/>");
@@ -236,10 +250,15 @@ function createPaginationButtons(paramTargetElemId, paramTemplateElementId)
     var $btnTargetElementDivObj = $("#" + paramTargetElemId);
     var $btnPrev = $("<button/>").html("<").addClass("btn btn-primary").data({"type":"prev", "templateid": paramTemplateElementId}).click(ChangePage);
     var $btnNext = $("<button/>").html(">").addClass("btn btn-primary").data({"type":"next", "templateid": paramTemplateElementId}).click(ChangePage);
-    var $btnRow = $("<div/>").addClass("row");
-    var $btnCell1 = $("<div/>").addClass("col-sm-6").append($btnPrev);
-    var $btnCell2 = $("<div/>").addClass("col-sm-6").append($btnNext).css("text-align", "right");
-    $btnRow.append($btnCell1).append($btnCell2);
+    var $btnRow = $("<div/>").addClass("row").css({"margin-bottom":"15px"});
+    //var $btnCell1 = $("<div/>").addClass("col-sm-6");
+    
+    var curTemplateData = GetDataFromTemplateRoot($("#" + paramTemplateElementId));
+    var $spanx = $("<span/>").html(curTemplateData.TotalRowCount)
+    var $btnCell2 = $("<div/>").addClass("col-sm-12").append($btnPrev).append($spanx).append($btnNext).css("text-align", "right");
+    $btnRow
+        //.append($btnCell1)
+        .append($btnCell2);
     $btnTargetElementDivObj.append($btnRow);
 }//(End Of) Function createPaginationButtons
 
@@ -299,6 +318,7 @@ function GetDataFromTemplateRoot($paramTemplateRootObject)
     var getDataNode = $paramTemplateRootObject.data("nodepath");
     var getDataTotal = $paramTemplateRootObject.data("totalrowcountpath");
     var targetElementId = $paramTemplateRootObject.data("targetid");
+    var totalRowCount = $paramTemplateRootObject.data("totalrowcount");
     var arrChildElements = $paramTemplateRootObject.find("li");
     
 
@@ -314,6 +334,7 @@ function GetDataFromTemplateRoot($paramTemplateRootObject)
         GetDataNodePath: getDataNode,
         GetDataTotalPath: getDataTotal,
         TargetElementId: targetElementId,
+        TotalRowCount: totalRowCount, 
         ArrChildElements: arrChildElements
     }
 
