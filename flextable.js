@@ -248,6 +248,7 @@ function headerSortHandler(e)
 function createPaginationButtons(paramTargetElemId, paramTemplateElementId)
 {
     var $btnTargetElementDivObj = $("#" + paramTargetElemId);
+    
     var $btnPrev = $("<button/>").html("<").addClass("btn btn-primary").data({"type":"prev", "templateid": paramTemplateElementId}).click(ChangePage);
     var $btnNext = $("<button/>").html(">").addClass("btn btn-primary").data({"type":"next", "templateid": paramTemplateElementId}).click(ChangePage).css({"margin-left": "5px"});
     var $btnRow = $("<div/>").addClass("row").css({"margin-bottom":"15px"});
@@ -265,7 +266,15 @@ function createPaginationButtons(paramTargetElemId, paramTemplateElementId)
     for(p=0; p<pageBtnCount; p++)
     {
         
-        var $pageBtnx = $("<button/>").addClass("btn btn-primary").css({"margin-left": "5px"}).html(p+1);
+        var $pageBtnx = $("<button/>").css({"margin-left": "5px"}).html(p+1);
+        if(curTemplateData.CurPageNumber == (p+1))
+        {
+            $pageBtnx.addClass("btn btn-danger");
+        }
+        else
+        {
+            $pageBtnx.addClass("btn btn-primary");
+        }
         $pageBtnx.data({"type":"exactPage", "templateid": paramTemplateElementId, "pagenum":(p+1)}).click(ChangePage);
         $pageBtnGroup.append($pageBtnx);
     }
