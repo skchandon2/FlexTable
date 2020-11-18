@@ -19,14 +19,25 @@ try{
         
     }
 
-    $pagesizeStr = $_REQUEST["pagesize"];
-    $curpageNumberStr = $_REQUEST["curpage"];
+    if(isset($_REQUEST["pagesize"]))
+    {
+        $pagesizeStr = $_REQUEST["pagesize"];
+    }
+
+    if(isset($_REQUEST["curpage"]))
+    {
+        $curpageNumberStr = $_REQUEST["curpage"];
+    }
+
 
     $pagesizeInt = intval($pagesizeStr);
     $curpageNumberInt = intval($curpageNumberStr);
 
     $recordStartIndex = ($curpageNumberInt - 1) * $pagesizeInt;
     
+    $rs = mysql_query("select count(*) from mr_chelsea_players");
+    $totalCountsRow = mysql_fetch_row($rs);
+    $totalCountVal = $totalCountsRow[0];
 
     $result = array();
     
@@ -35,7 +46,11 @@ try{
         array_push($result, $row);
     }
 
-    echo json_encode($result);
+    $finalResult = new stdClass();
+    $finalResult->Records = $result;
+    $finalResult->TotalRowCount = $totalCountVal;
+
+    echo json_encode($finalResult);
     include 'dbclose.php';
 }
 catch(Exception $ex)
