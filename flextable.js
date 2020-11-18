@@ -266,6 +266,7 @@ function createPaginationButtons(paramTargetElemId, paramTemplateElementId)
     {
         
         var $pageBtnx = $("<button/>").addClass("btn btn-primary").css({"margin-left": "5px"}).html(p+1);
+        $pageBtnx.data({"type":"exactPage", "templateid": paramTemplateElementId, "pagenum":(p+1)}).click(ChangePage);
         $pageBtnGroup.append($pageBtnx);
     }
     
@@ -283,6 +284,7 @@ function ChangePage(e)
     //console.log($curBtn.data())
     var changeType = $curBtn.data("type");
     var templateIdWithNoHash = $curBtn.data("templateid");
+    var curPageNumberIfAny = $curBtn.data("pagenum");
     var $templateRootObj = $("#" + templateIdWithNoHash);
     var curTemplateData = GetDataFromTemplateRoot($templateRootObj);
     //console.log($templateRootObj.data("currentpagenumber"))
@@ -293,9 +295,17 @@ function ChangePage(e)
     {
         intCurrentPageNumber--;
     }
-    else
+    else if(changeType=="next")
     {
         intCurrentPageNumber ++;
+    }
+    else if(curPageNumberIfAny!=null)
+    {
+        intCurrentPageNumber = curPageNumberIfAny;
+    }
+    else
+    {
+        return;
     }
 
     if(intCurrentPageNumber<= 0)
