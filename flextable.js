@@ -249,13 +249,27 @@ function createPaginationButtons(paramTargetElemId, paramTemplateElementId)
 {
     var $btnTargetElementDivObj = $("#" + paramTargetElemId);
     var $btnPrev = $("<button/>").html("<").addClass("btn btn-primary").data({"type":"prev", "templateid": paramTemplateElementId}).click(ChangePage);
-    var $btnNext = $("<button/>").html(">").addClass("btn btn-primary").data({"type":"next", "templateid": paramTemplateElementId}).click(ChangePage);
+    var $btnNext = $("<button/>").html(">").addClass("btn btn-primary").data({"type":"next", "templateid": paramTemplateElementId}).click(ChangePage).css({"margin-left": "5px"});
     var $btnRow = $("<div/>").addClass("row").css({"margin-bottom":"15px"});
     //var $btnCell1 = $("<div/>").addClass("col-sm-6");
     
     var curTemplateData = GetDataFromTemplateRoot($("#" + paramTemplateElementId));
-    var $spanx = $("<span/>").html(curTemplateData.TotalRowCount)
-    var $btnCell2 = $("<div/>").addClass("col-sm-12").append($btnPrev).append($spanx).append($btnNext).css("text-align", "right");
+    var curPageSize = curTemplateData.PageSize;
+    var curTotalRowCount = curTemplateData.TotalRowCount;
+    
+    var pageBtnCount = Math.ceil(curTotalRowCount/curPageSize);
+    
+    var $pageBtnGroup = $("<div/>").addClass("col-sm-12");
+    var $btnCell2 = $pageBtnGroup.append($btnPrev);
+    
+    for(p=0; p<pageBtnCount; p++)
+    {
+        
+        var $pageBtnx = $("<button/>").addClass("btn btn-primary").css({"margin-left": "5px"}).html(p+1);
+        $pageBtnGroup.append($pageBtnx);
+    }
+    
+    $pageBtnGroup.append($btnNext).css({"text-align": "right"})
     $btnRow
         //.append($btnCell1)
         .append($btnCell2);
