@@ -260,7 +260,7 @@ function createPaginationButtons(paramTargetElemId, paramTemplateElementId)
     var pageBtnCount = Math.ceil(curTotalRowCount/curPageSize);
     
     var $pageBtnGroup = $("<div/>").addClass("col-sm-12");
-    var $btnCell2 = $pageBtnGroup.append($btnPrev);
+    $pageBtnGroup.append($btnPrev);
     
     for(p=0; p<pageBtnCount; p++)
     {
@@ -273,7 +273,7 @@ function createPaginationButtons(paramTargetElemId, paramTemplateElementId)
     $pageBtnGroup.append($btnNext).css({"text-align": "right"})
     $btnRow
         //.append($btnCell1)
-        .append($btnCell2);
+        .append($pageBtnGroup);
     $btnTargetElementDivObj.append($btnRow);
 }//(End Of) Function createPaginationButtons
 
