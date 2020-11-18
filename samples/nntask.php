@@ -19,14 +19,30 @@ try{
         
     }
 
-    $pagesizeStr = $_REQUEST["pagesize"];
-    $curpageNumberStr = $_REQUEST["curpage"];
+    if(isset($_REQUEST["pagesize"]))
+    {
+        $pagesizeStr = $_REQUEST["pagesize"];
+    }
+
+    if(isset($_REQUEST["curpage"]))
+    {
+        $curpageNumberStr = $_REQUEST["curpage"];
+    }
+
+    //$pagesizeStr = $_REQUEST["pagesize"];
+    //$curpageNumberStr = $_REQUEST["curpage"];
 
     $pagesizeInt = intval($pagesizeStr);
     $curpageNumberInt = intval($curpageNumberStr);
-
+    
     $recordStartIndex = ($curpageNumberInt - 1) * $pagesizeInt;
 
+    $rs = mysql_query("select count(*) from nn_list");
+    $totalCountsRow = mysql_fetch_row($rs);
+    $totalCountVal = $totalCountsRow[0];
+    //echo $totalCountVal;
+
+    //$finalResult = array();
     $result = array();
     
     
@@ -34,9 +50,14 @@ try{
     while($row = mysql_fetch_object($recordset)){
         array_push($result, $row);
     }
-
-    echo json_encode($result);
+    $finalResult = new stdClass();
+    $finalResult->Records = $result;
+    $finalResult->TotalRowCount = $totalCountVal;
+    echo json_encode($finalResult);
     include 'dbclose.php';
+
+    //echo json_encode($result);
+    //include 'dbclose.php';
 }
 catch(Exception $ex)
 {
