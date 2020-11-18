@@ -87,12 +87,15 @@
 
     <ul id="itemsList4" class="flextable" 
         data-getdataurl = "products.php" 
+        data-nodepath = "root.Records" 
+        data-totalrowcountpath = "root.TotalRowCount"
         data-sortbyserversideparam="sort" 
         data-targetid="dynamicTable4"
         data-pagesize="5"
         data-pagesizeserversideparam="pagesize"
         data-currentpageserversideparam="curpage"
         data-defaultsortbyfield="product_name"
+
         >
         
         <li data-jsonfieldname="product_name" data-sortby="product_name">Product Name</li>
