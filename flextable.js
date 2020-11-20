@@ -263,7 +263,7 @@ function createPaginationButtons(paramTargetElemId, paramTemplateElementId)
     var $pageBtnGroup = $("<div/>").addClass("col-sm-12 form-inline");
     $pageBtnGroup.append($btnPrev);
     
-    var $pageBtnScrollGroup = $("<div/>").css({"display":"block", "overflow-x":"scroll", "overflow-y":"none", "max-width":"100px", "height":"60px"});
+    var $pageBtnScrollGroup = $("<div/>").css({"display":"block", "overflow-x":"scroll", "overflow-y":"none", "max-width":"300px", "height":"60px"});
     var $pageBtnScrollGroupInner = $("<div/>").addClass("btn-group");
     for(p=0; p<pageBtnCount; p++)
     {
