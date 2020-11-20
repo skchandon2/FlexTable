@@ -249,8 +249,8 @@ function createPaginationButtons(paramTargetElemId, paramTemplateElementId)
 {
     var $btnTargetElementDivObj = $("#" + paramTargetElemId);
     
-    var $btnPrev = $("<button/>").html("<").addClass("btn btn-primary").data({"type":"prev", "templateid": paramTemplateElementId}).click(ChangePage);
-    var $btnNext = $("<button/>").html(">").addClass("btn btn-primary").data({"type":"next", "templateid": paramTemplateElementId}).click(ChangePage).css({"margin-left": "5px"});
+    var $btnPrev = $("<button/>").html("<").addClass("btn btn-primary").data({"type":"prev", "templateid": paramTemplateElementId}).click(ChangePage).css({"margin-top":"-22px"});
+    var $btnNext = $("<button/>").html(">").addClass("btn btn-primary").data({"type":"next", "templateid": paramTemplateElementId}).click(ChangePage).css({"margin-left": "5px", "margin-top":"-22px"});
     var $btnRow = $("<div/>").addClass("row").css({"margin-bottom":"15px"});
     //var $btnCell1 = $("<div/>").addClass("col-sm-6");
     
@@ -260,25 +260,31 @@ function createPaginationButtons(paramTargetElemId, paramTemplateElementId)
     
     var pageBtnCount = Math.ceil(curTotalRowCount/curPageSize);
     
-    var $pageBtnGroup = $("<div/>").addClass("col-sm-12");
+    var $pageBtnGroup = $("<div/>").addClass("col-sm-12 form-inline");
     $pageBtnGroup.append($btnPrev);
     
+    var $pageBtnScrollGroup = $("<div/>").css({"display":"block", "overflow-x":"scroll", "overflow-y":"none", "max-width":"100px", "height":"60px"});
+    var $pageBtnScrollGroupInner = $("<div/>").addClass("btn-group");
     for(p=0; p<pageBtnCount; p++)
     {
         
-        var $pageBtnx = $("<button/>").css({"margin-left": "5px"}).html(p+1);
+        var $pageBtnx = $("<button/>")
+            .css({"margin-left": "5px", "display": "inline"})
+            .html(p+1);
         if(curTemplateData.CurPageNumber == (p+1))
         {
             $pageBtnx.addClass("btn btn-danger");
+
         }
         else
         {
             $pageBtnx.addClass("btn btn-primary");
         }
         $pageBtnx.data({"type":"exactPage", "templateid": paramTemplateElementId, "pagenum":(p+1)}).click(ChangePage);
-        $pageBtnGroup.append($pageBtnx);
+        $pageBtnScrollGroupInner.append($pageBtnx);
     }
-    
+    $pageBtnScrollGroup.append($pageBtnScrollGroupInner);
+    $pageBtnGroup.append($pageBtnScrollGroup);
     $pageBtnGroup.append($btnNext).css({"text-align": "right"})
     $btnRow
         //.append($btnCell1)
