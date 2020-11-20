@@ -265,6 +265,8 @@ function createPaginationButtons(paramTargetElemId, paramTemplateElementId)
     
     var $pageBtnScrollGroup = $("<div/>").css({"display":"block", "overflow-x":"scroll", "overflow-y":"none", "max-width":"300px", "height":"60px"});
     var $pageBtnScrollGroupInner = $("<div/>").addClass("btn-group");
+    
+    var $curSelectedButton = null;
     for(p=0; p<pageBtnCount; p++)
     {
         
@@ -274,7 +276,7 @@ function createPaginationButtons(paramTargetElemId, paramTemplateElementId)
         if(curTemplateData.CurPageNumber == (p+1))
         {
             $pageBtnx.addClass("btn btn-danger");
-
+            $curSelectedButton = $pageBtnx;
         }
         else
         {
@@ -290,6 +292,10 @@ function createPaginationButtons(paramTargetElemId, paramTemplateElementId)
         //.append($btnCell1)
         .append($pageBtnGroup);
     $btnTargetElementDivObj.append($btnRow);
+    
+    var newScrollPosition = $curSelectedButton.offset().left - 81;
+    console.log(newScrollPosition)
+    $pageBtnScrollGroup.scrollLeft(newScrollPosition);
 }//(End Of) Function createPaginationButtons
 
 function ChangePage(e)
