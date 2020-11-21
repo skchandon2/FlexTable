@@ -10,6 +10,25 @@ try{
     $pagesizeStr = '5';
     $curpageNumberStr = '1';
 
+    $filterbyauthor = '';
+    $filterbypublisher = '';
+    if(isset($_REQUEST['filterbyauthor'])  )
+    {
+        if ($_REQUEST['filterbyauthor'] != "") 
+        {
+            $filterbyauthor = $_REQUEST['filterbyauthor'];
+        }
+        
+    }
+
+    if(isset($_REQUEST['filterbypublisher'])  )
+    {
+        if ($_REQUEST['filterbypublisher'] != "") 
+        {
+            $filterbypublisher = $_REQUEST['filterbypublisher'];
+        }
+        
+    }
 
     if(isset($_REQUEST['sort'])  )
     {
@@ -42,8 +61,30 @@ try{
 
     //$finalResult = array();
     $result = array();
-    
-    $recordset = mysql_query("select * from scbooks order by $sort limit $recordStartIndex, $pagesizeInt") or die ("{ error: " . mysql_error() . "}");
+    $whereclause = "";
+    if($filterbyauthor!='')
+    {
+        if($whereclause=="")
+        {
+            $whereclause .= " where ";
+        }
+
+        $whereclause .= "authorname like '%$filterbyauthor%'";
+    }
+    if($filterbypublisher!='')
+    {
+        if($whereclause=="")
+        {
+            $whereclause .= " where ";
+        }
+        else
+        {
+            $whereclause .= " and ";
+        }
+
+        $whereclause .= "publishername like '%$filterbypublisher%'";
+    }
+    $recordset = mysql_query("select * from scbooks $whereclause order by $sort limit $recordStartIndex, $pagesizeInt") or die ("{ error: " . mysql_error() . "}");
     while($row = mysql_fetch_object($recordset)){
         array_push($result, $row);
     }
