@@ -130,23 +130,35 @@
     function populateHeaderCells($childElemsx, $hdrtrx)
     {
         $.each($childElemsx, function(keyx, valx){
-            var $curTemplateElement = $(valx);
-            var headerText = "";
-            if($curTemplateElement.data("sortby") != null)
+            var $curTemplateChildElement = $(valx);
+            var $headerText = null;
+            var $filterText = null;
+            var $filterBtn = null;
+            if($curTemplateChildElement.data("sortby") != null)
             {
-                headerText = $("<a></a>")
+                $headerText = $("<a></a>")
                     .attr("href", "#")
-                    .html($curTemplateElement.html())
+                    .html($curTemplateChildElement.html())
                     .click(headerSortHandler)
-                    .data({"sortbyfield": $curTemplateElement.data("sortby"), "templateid": $childElemsx.parent().attr("id")});
+                    .data({"sortbyfield": $curTemplateChildElement.data("sortby"), "templateid": $childElemsx.parent().attr("id")});
                     ;
             }
             else
             {
-                headerText = $curTemplateElement.html();
+                $headerText = $curTemplateChildElement.html();
+            }
+            if($curTemplateChildElement.data("filterbyserverparam") != null)
+            {
+                $filterText = $("<input/>").attr("type","text")
+                .data({"filterText":$curTemplateChildElement.data("filterbyserverparam"),"templateid": $childElemsx.parent().attr("id")});
+                $filterBtn = $("<button/>").addClass("btn btn-primary").text("Search")
+                .data("relatedinput",$filterText);
+
             }
 
-            var $thcell1 = $("<th/>").html(headerText).addClass("text-primary");
+            var $thcell1 = $("<th/>").append($headerText).addClass("text-primary");
+            $thcell1.append($filterText);
+            $thcell1.append($filterBtn);
             $hdrtrx.append($thcell1);
         });//(End Of) $.each
     }//(End Of) populateHeaderCells
@@ -265,8 +277,6 @@ function createPaginationButtons(paramTargetElemId, paramTemplateElementId)
     
     var $pageBtnScrollGroup = $("<div/>").css({"display":"block", "overflow-x":"scroll", "overflow-y":"none", "max-width":"300px", "height":"60px"});
     var $pageBtnScrollGroupInner = $("<div/>").addClass("btn-group");
-    
-    var $curSelectedButton = null;
     for(p=0; p<pageBtnCount; p++)
     {
         
@@ -276,7 +286,7 @@ function createPaginationButtons(paramTargetElemId, paramTemplateElementId)
         if(curTemplateData.CurPageNumber == (p+1))
         {
             $pageBtnx.addClass("btn btn-danger");
-            $curSelectedButton = $pageBtnx;
+
         }
         else
         {
@@ -292,10 +302,6 @@ function createPaginationButtons(paramTargetElemId, paramTemplateElementId)
         //.append($btnCell1)
         .append($pageBtnGroup);
     $btnTargetElementDivObj.append($btnRow);
-    
-    var newScrollPosition = $curSelectedButton.offset().left - 81;
-    console.log(newScrollPosition)
-    $pageBtnScrollGroup.scrollLeft(newScrollPosition);
 }//(End Of) Function createPaginationButtons
 
 function ChangePage(e)
