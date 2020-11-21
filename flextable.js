@@ -9,6 +9,7 @@
             var templateRootId = $templateRootObj.attr("id");
             var currentPageNumber = 1;
             $templateRootObj.data("currentpagenumber", currentPageNumber);
+            $templateRootObj.data("currentsearchfilter", {});
 
             var curTemplateData = GetDataFromTemplateRoot($templateRootObj);
 
@@ -27,7 +28,7 @@
         
     });
     
-    function getData(strTemplateElementID, paramSortBy="", paramPageSize=5, paramCurPage=1, paramPageSizeServerSideVar="", paramCurPageServerSideVar="")
+    function getData(strTemplateElementID, paramSortBy="", paramPageSize=5, paramCurPage=1, paramPageSizeServerSideVar="", paramCurPageServerSideVar="", paramFilterObj={})
     {
         
         var templateElementId = "#" + strTemplateElementID;
@@ -46,6 +47,7 @@
         {
             getDataParams[paramCurPageServerSideVar] = paramCurPage;
         }
+    
         console.log(getDataParams)
         $.get(curUrl, getDataParams)
             .done(function(datax) {
@@ -132,7 +134,7 @@
         $.each($childElemsx, function(keyx, valx){
             var $curTemplateChildElement = $(valx);
             var $headerText = null;
-            var $filterText = null;
+            var $filterInputBox = null;
             var $filterBtn = null;
             if($curTemplateChildElement.data("sortby") != null)
             {
@@ -149,19 +151,41 @@
             }
             if($curTemplateChildElement.data("filterbyserverparam") != null)
             {
-                $filterText = $("<input/>").attr("type","text")
-                .data({"filterText":$curTemplateChildElement.data("filterbyserverparam"),"templateid": $childElemsx.parent().attr("id")});
+                $filterInputBox = $("<input/>").attr("type","text")
+                .data({"filterbyserversideparam":$curTemplateChildElement.data("filterbyserverparam"),"templateid": $childElemsx.parent().attr("id")});
                 $filterBtn = $("<button/>").addClass("btn btn-primary").text("Search")
-                .data("relatedinput",$filterText);
+                .data("relatedinput",$filterInputBox)
+                .click(filterBtnClickHandler);
 
             }
 
             var $thcell1 = $("<th/>").append($headerText).addClass("text-primary");
-            $thcell1.append($filterText);
+            $thcell1.append($filterInputBox);
             $thcell1.append($filterBtn);
             $hdrtrx.append($thcell1);
         });//(End Of) $.each
     }//(End Of) populateHeaderCells
+
+    function filterBtnClickHandler(e)
+    {
+        e.preventDefault();
+        var $curBtn = $(this);
+        var $relatedFilterInput = $($curBtn.data("relatedinput"));
+        var inputFilterServerSideParam = $relatedFilterInput.data("filterText");
+        var inputFilterText = $relatedFilterInput.val();
+        var filterObj = {[inputFilterServerSideParam+""]: inputFilterText};
+        console.log($relatedFilterInput.data());
+        var templateRootId = $relatedFilterInput.data("templateid");
+        var $templateRootObj = $("#" + templateRootId);
+        var curTemplateData = GetDataFromTemplateRoot($templateRootObj);
+        var intCurrentPageNumber = parseInt(curTemplateData.CurPageNumber);
+        var pageSize = curTemplateData.PageSize; //$templateRootObj.data("pagesize");
+        var pageSizeServerSideParam = curTemplateData.PageSizeServerSideParam; //$templateRootObj.data("pagesizeserversideparam");
+        var curPageServerSideParam = curTemplateData.CurPageServerSideParam; //$templateRootObj.data("currentpageserversideparam");
+        getData(templateRootId, pageSize, intCurrentPageNumber, pageSizeServerSideParam, curPageServerSideParam, filterObj);
+        $templateRootObj.data("currentsearchfilter", filterObj);
+
+    }
     
     function createAndPopulateOneLine($tbody, $childElems, currentInputLine)
     {
@@ -371,6 +395,7 @@ function GetDataFromTemplateRoot($paramTemplateRootObject)
     var targetElementId = $paramTemplateRootObject.data("targetid");
     var totalRowCount = $paramTemplateRootObject.data("totalrowcount");
     var arrChildElements = $paramTemplateRootObject.find("li");
+    var curSearchFilter = $paramTemplateRootObject.data("currentsearchfilter");
     
 
     return {
@@ -386,7 +411,8 @@ function GetDataFromTemplateRoot($paramTemplateRootObject)
         GetDataTotalPath: getDataTotal,
         TargetElementId: targetElementId,
         TotalRowCount: totalRowCount, 
-        ArrChildElements: arrChildElements
+        ArrChildElements: arrChildElements,
+        CurSearchFilter: curSearchFilter
     }
 
 }//(End Of) Function GetDataFromTemplateRoot
