@@ -9,7 +9,7 @@
             var templateRootId = $templateRootObj.attr("id");
             var currentPageNumber = 1;
             $templateRootObj.data("currentpagenumber", currentPageNumber);
-            $templateRootObj.data("currentsearchfilter", {});
+            $templateRootObj.data("currentsearchfilter", []);
 
             var curTemplateData = GetDataFromTemplateRoot($templateRootObj);
 
@@ -50,9 +50,12 @@
         console.log(paramFilterObj);
         if(paramFilterObj!=null)
         {            
-            $.each(paramFilterObj, function(keyx, filterx){
-                getDataParams[keyx] = filterx;
-            });;//(End of) $.each(paramFilterObj)...
+            $.each(paramFilterObj, function(i, arrayElemex){
+                $.each(arrayElemex, function(keyx, filterx){
+                    getDataParams[keyx] = filterx;
+                });
+
+            });//(End of) $.each(paramFilterObj)...
         }
     
         console.log(getDataParams)
@@ -193,6 +196,12 @@
         var curPageServerSideParam = curTemplateData.CurPageServerSideParam; //$templateRootObj.data("currentpageserversideparam");
         var curSortBy = curTemplateData.CurSortByField;
         
+        var arrFilters = [];
+        arrFilters = curTemplateData.CurSearchFilter;
+
+        arrFilters.push(filterObj);
+
+
         getData(
                 templateRootId,
                 curSortBy,  
@@ -200,8 +209,8 @@
                 intCurrentPageNumber, 
                 pageSizeServerSideParam, 
                 curPageServerSideParam, 
-                filterObj);
-        $templateRootObj.data("currentsearchfilter", filterObj);
+                arrFilters);
+        $templateRootObj.data("currentsearchfilter", arrFilters);
 
     }
     
