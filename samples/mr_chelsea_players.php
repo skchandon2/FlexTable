@@ -10,6 +10,26 @@ try{
     $pagesizeStr = '5';
     $curpageNumberStr = '1';
 
+    $filterbynationality = '';
+    $filterbyposition = '';
+    if(isset($_REQUEST['filterbynationality'])  )
+    {
+        if ($_REQUEST['filterbynationality'] != "") 
+        {
+            $filterbynationality = $_REQUEST['filterbynationality'];
+        }
+        
+    }
+
+    if(isset($_REQUEST['filterbyposition'])  )
+    {
+        if ($_REQUEST['filterbyposition'] != "") 
+        {
+            $filterbyposition = $_REQUEST['filterbyposition'];
+        }
+        
+    }
+
     if(isset($_REQUEST['sort'])  )
     {
         if ($_REQUEST['sort'] != "") 
@@ -34,14 +54,38 @@ try{
     $curpageNumberInt = intval($curpageNumberStr);
 
     $recordStartIndex = ($curpageNumberInt - 1) * $pagesizeInt;
+
+    $whereclause = "";
+    if($filterbynationality!='')
+    {
+        if($whereclause=="")
+        {
+            $whereclause .= " where ";
+        }
+
+        $whereclause .= "nationality like '%$filterbynationality%'";
+    }
+    if($filterbyposition!='')
+    {
+        if($whereclause=="")
+        {
+            $whereclause .= " where ";
+        }
+        else
+        {
+            $whereclause .= " and ";
+        }
+
+        $whereclause .= "position like '%$filterbyposition%'";
+    }
     
-    $rs = mysql_query("select count(*) from mr_chelsea_players");
+    $rs = mysql_query("select count(*) from mr_chelsea_players $whereclause");
     $totalCountsRow = mysql_fetch_row($rs);
     $totalCountVal = $totalCountsRow[0];
 
     $result = array();
     
-    $recordset = mysql_query("select * from mr_chelsea_players order by $sort limit $recordStartIndex, $pagesizeInt") or die ("{ error: " . mysql_error() . "}");
+    $recordset = mysql_query("select * from mr_chelsea_players $whereclause order by $sort limit $recordStartIndex, $pagesizeInt") or die ("{ error: " . mysql_error() . "}");
     while($row = mysql_fetch_object($recordset)){
         array_push($result, $row);
     }
