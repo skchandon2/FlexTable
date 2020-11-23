@@ -290,6 +290,7 @@ function headerSortHandler(e)
     var curTemplateId = $(this).data("templateid");
     var $templateRootObj = $("#" + curTemplateId);
     var curTemplateData = GetDataFromTemplateRoot($templateRootObj);
+    var curFilter = curTemplateData.CurSearchFilter;
     var pageSize = curTemplateData.PageSize; //$templateRootObj.data("pagesize");
     var pageSizeServerSideParam = curTemplateData.PageSizeServerSideParam; //$templateRootObj.data("pagesizeserversideparam");
     var curPageServerSideParam = curTemplateData.CurPageServerSideParam; //$templateRootObj.data("currentpageserversideparam");
@@ -301,7 +302,7 @@ function headerSortHandler(e)
             pageSize, 
             curPageNumber, 
             pageSizeServerSideParam, 
-            curPageServerSideParam);
+            curPageServerSideParam, curFilter);
     $templateRootObj.data("currentsortbyfield", curSortBy);
 }//(End Of) Function headerSortHandler
 
