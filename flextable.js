@@ -161,11 +161,28 @@
             }
             if($curTemplateChildElement.data("filterbyserverparam") != null)
             {
+                var $templateRootElement = $childElemsx.parent();
+
                 $filterInputBox = $("<input/>").attr("type","text")
-                .data({"filterbyserversideparam":$curTemplateChildElement.data("filterbyserverparam"),"templateid": $childElemsx.parent().attr("id")});
+                .data({"filterbyserversideparam":$curTemplateChildElement.data("filterbyserverparam"),"templateid": $templateRootElement.attr("id")});
+                
                 $filterBtn = $("<button/>").addClass("btn btn-primary").text("Search")
                 .data("relatedinput",$filterInputBox)
                 .click(filterBtnClickHandler);
+
+                //Iterate through all the filters currently attached to the root element.
+                //  Then check if the current child element's filterbyserverside param is the same.
+                //  If same, then retain the value that was typed by the end-user in the input box.
+                var curTemplateData = GetDataFromTemplateRoot($templateRootElement);
+                var curFiltersArray = curTemplateData.CurSearchFilter;
+                $.each(curFiltersArray, function(i, singleFilter){
+                    $.each(singleFilter, function(keyx, filterInputValx){
+                        if(keyx == $curTemplateChildElement.data("filterbyserverparam"))
+                        {
+                            $filterInputBox.val(filterInputValx);
+                        }
+                    });
+                });
 
             }
 
@@ -173,7 +190,7 @@
             $thcell1.append($filterInputBox);
             $thcell1.append($filterBtn);
             $hdrtrx.append($thcell1);
-        });//(End Of) $.each
+        });//(End Of) $.each (filterInputValx ..
     }//(End Of) populateHeaderCells
 
     function filterBtnClickHandler(e)
