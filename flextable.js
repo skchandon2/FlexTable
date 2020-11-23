@@ -187,6 +187,7 @@
         var curTemplateData = GetDataFromTemplateRoot($templateRootObj);
         //we want to start searching at page 1
         var intCurrentPageNumber = 1;//parseInt(curTemplateData.CurPageNumber);
+        $templateRootObj.data("currentpagenumber", 1);
         var pageSize = curTemplateData.PageSize; //$templateRootObj.data("pagesize");
         var pageSizeServerSideParam = curTemplateData.PageSizeServerSideParam; //$templateRootObj.data("pagesizeserversideparam");
         var curPageServerSideParam = curTemplateData.CurPageServerSideParam; //$templateRootObj.data("currentpageserversideparam");
