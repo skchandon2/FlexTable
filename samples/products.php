@@ -9,6 +9,25 @@ try{
     $sort = 'price';    
     $pagesizeStr = '5';
     $curpageNumberStr = '1';
+
+    $filterbyProduct = '';
+    $filterbyStore = '';
+    if(isset($_REQUEST['filterbyProduct'])  )
+    {
+        if ($_REQUEST['filterbyProduct'] != "") 
+        {
+            $filterbyProduct = $_REQUEST['filterbyProduct'];
+        }
+        
+    }
+    if(isset($_REQUEST['filterbyStore']))
+    {
+        if($_REQUEST['filterbyStore'] != "")
+        {
+            $filterbyStore = $_REQUEST['filterbyStore'];
+        }
+    }
+
     if(isset($_REQUEST['sort'])  )
     {
         if ($_REQUEST['sort'] != "") 
@@ -33,7 +52,31 @@ try{
     $curpageNumberInt = intval($curpageNumberStr);
 
     $recordStartIndex = ($curpageNumberInt - 1) * $pagesizeInt;
-    $rs = mysql_query("select count(*) from fatima_products");
+
+    $whereclause = "";
+    if($filterbyProduct!='')
+    {
+        if($whereclause=="")
+        {
+            $whereclause .= " where ";
+        }
+
+        $whereclause .= "product_name like '%$filterbyProduct%'";
+    }
+    if($filterbyStore !='')
+    {
+        if($whereclause=="")
+        {
+            $whereclause .= " where ";
+        }
+        else
+        {
+            $whereclause .= " and ";
+        }
+        $whereclause .= "store_name like '%$filterbyStore%'";
+    }
+
+    $rs = mysql_query("select count(*) from fatima_products $whereclause");
     $totalCountsRow = mysql_fetch_row($rs);
     $totalCountVal = $totalCountsRow[0];
     //echo $totalCountVal;
@@ -42,7 +85,7 @@ try{
   
     $result = array();
     
-    $recordset = mysql_query("select * from fatima_products order by $sort limit $recordStartIndex, $pagesizeInt") or die ("{ error: " . mysql_error() . "}");
+    $recordset = mysql_query("select * from fatima_products $whereclause order by $sort limit $recordStartIndex, $pagesizeInt") or die ("{ error: " . mysql_error() . "}");
     while($row = mysql_fetch_object($recordset)){
         array_push($result, $row);
     }
