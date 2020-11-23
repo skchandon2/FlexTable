@@ -10,6 +10,26 @@ try{
     $pagesizeStr = '5';
     $curpageNumberStr = '1';   
 
+    $taskfilter = '';
+    $itemfilter = '';
+    if(isset($_REQUEST['taskfilter'])  )
+    {
+        if ($_REQUEST['taskfilter'] != "") 
+        {
+            $taskfilter = $_REQUEST['taskfilter'];
+        }
+        
+    }
+
+    if(isset($_REQUEST['itemfilter'])  )
+    {
+        if ($_REQUEST['itemfilter'] != "") 
+        {
+            $itemfilter = $_REQUEST['itemfilter'];
+        }
+        
+    }
+
     if(isset($_REQUEST['sort'])  )
     {
         if ($_REQUEST['sort'] != "") 
@@ -37,7 +57,30 @@ try{
     
     $recordStartIndex = ($curpageNumberInt - 1) * $pagesizeInt;
 
-    $rs = mysql_query("select count(*) from nn_list");
+    $whereclause = "";
+    if($taskfilter!='')
+    {
+        if($whereclause=="")
+        {
+            $whereclause .= " where ";
+        }
+
+        $whereclause .= "taskname like '%$taskfilter%'";
+    }
+    if($itemfilter!='')
+    {
+        if($whereclause=="")
+        {
+            $whereclause .= " where ";
+        }
+        else
+        {
+            $whereclause .= " and ";
+        }
+
+        $whereclause .= "itemname like '%$itemfilter%'";
+    }
+    $rs = mysql_query("select count(*) from nn_list $whereclause");
     $totalCountsRow = mysql_fetch_row($rs);
     $totalCountVal = $totalCountsRow[0];
     //echo $totalCountVal;
@@ -46,7 +89,7 @@ try{
     $result = array();
     
     
-    $recordset = mysql_query("select * from nn_list order by $sort limit $recordStartIndex, $pagesizeInt") or die ("{ error: " . mysql_error() . "}");
+    $recordset = mysql_query("select * from nn_list $whereclause order by $sort limit $recordStartIndex, $pagesizeInt") or die ("{ error: " . mysql_error() . "}");
     while($row = mysql_fetch_object($recordset)){
         array_push($result, $row);
     }
