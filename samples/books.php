@@ -53,14 +53,7 @@ try{
     $curpageNumberInt = intval($curpageNumberStr);
 
     $recordStartIndex = ($curpageNumberInt - 1) * $pagesizeInt;
-    
-    $rs = mysql_query("select count(*) from scbooks");
-    $totalCountsRow = mysql_fetch_row($rs);
-    $totalCountVal = $totalCountsRow[0];
-    //echo $totalCountVal;
 
-    //$finalResult = array();
-    $result = array();
     $whereclause = "";
     if($filterbyauthor!='')
     {
@@ -84,6 +77,15 @@ try{
 
         $whereclause .= "publishername like '%$filterbypublisher%'";
     }
+
+    $rs = mysql_query("select count(*) from scbooks $whereclause");
+    $totalCountsRow = mysql_fetch_row($rs);
+    $totalCountVal = $totalCountsRow[0];
+    //echo $totalCountVal;
+
+    //$finalResult = array();
+    $result = array();
+    
     $recordset = mysql_query("select * from scbooks $whereclause order by $sort limit $recordStartIndex, $pagesizeInt") or die ("{ error: " . mysql_error() . "}");
     while($row = mysql_fetch_object($recordset)){
         array_push($result, $row);
