@@ -28,7 +28,7 @@
         
     });
     
-    function getData(strTemplateElementID, paramSortBy="", paramPageSize=5, paramCurPage=1, paramPageSizeServerSideVar="", paramCurPageServerSideVar="", paramFilterObj={})
+    function getData(strTemplateElementID, paramSortBy="", paramPageSize=5, paramCurPage=1, paramPageSizeServerSideVar="", paramCurPageServerSideVar="", paramFilterObj=null)
     {
         
         var templateElementId = "#" + strTemplateElementID;
@@ -46,6 +46,13 @@
         if(paramCurPageServerSideVar!="")
         {
             getDataParams[paramCurPageServerSideVar] = paramCurPage;
+        }
+        console.log(paramFilterObj);
+        if(paramFilterObj!=null)
+        {            
+            $.each(paramFilterObj, function(keyx, filterx){
+                getDataParams[keyx] = filterx;
+            });;//(End of) $.each(paramFilterObj)...
         }
     
         console.log(getDataParams)
@@ -171,10 +178,10 @@
         e.preventDefault();
         var $curBtn = $(this);
         var $relatedFilterInput = $($curBtn.data("relatedinput"));
-        var inputFilterServerSideParam = $relatedFilterInput.data("filterText");
+        var inputFilterServerSideParam = $relatedFilterInput.data("filterbyserversideparam");        
         var inputFilterText = $relatedFilterInput.val();
         var filterObj = {[inputFilterServerSideParam+""]: inputFilterText};
-        console.log($relatedFilterInput.data());
+        
         var templateRootId = $relatedFilterInput.data("templateid");
         var $templateRootObj = $("#" + templateRootId);
         var curTemplateData = GetDataFromTemplateRoot($templateRootObj);
@@ -182,7 +189,16 @@
         var pageSize = curTemplateData.PageSize; //$templateRootObj.data("pagesize");
         var pageSizeServerSideParam = curTemplateData.PageSizeServerSideParam; //$templateRootObj.data("pagesizeserversideparam");
         var curPageServerSideParam = curTemplateData.CurPageServerSideParam; //$templateRootObj.data("currentpageserversideparam");
-        getData(templateRootId, pageSize, intCurrentPageNumber, pageSizeServerSideParam, curPageServerSideParam, filterObj);
+        var curSortBy = curTemplateData.CurSortByField;
+        
+        getData(
+                templateRootId,
+                curSortBy,  
+                pageSize, 
+                intCurrentPageNumber, 
+                pageSizeServerSideParam, 
+                curPageServerSideParam, 
+                filterObj);
         $templateRootObj.data("currentsearchfilter", filterObj);
 
     }
@@ -277,7 +293,13 @@ function headerSortHandler(e)
     var curPageServerSideParam = curTemplateData.CurPageServerSideParam; //$templateRootObj.data("currentpageserversideparam");
     var curPageNumber = curTemplateData.CurPageNumber; //$templateRootObj.data("currentpagenumber");
     console.log(pageSizeServerSideParam);    
-    getData(curTemplateId, curSortBy, pageSize, curPageNumber, pageSizeServerSideParam, curPageServerSideParam);
+    getData(
+            curTemplateId, 
+            curSortBy, 
+            pageSize, 
+            curPageNumber, 
+            pageSizeServerSideParam, 
+            curPageServerSideParam);
     $templateRootObj.data("currentsortbyfield", curSortBy);
 }//(End Of) Function headerSortHandler
 
