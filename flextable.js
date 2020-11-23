@@ -362,6 +362,7 @@ function ChangePage(e)
     var curPageNumberIfAny = $curBtn.data("pagenum");
     var $templateRootObj = $("#" + templateIdWithNoHash);
     var curTemplateData = GetDataFromTemplateRoot($templateRootObj);
+    var curFilter = curTemplateData.CurSearchFilter;
     //console.log($templateRootObj.data("currentpagenumber"))
     var intCurrentPageNumber = parseInt(curTemplateData.CurPageNumber);//parseInt($templateRootObj.data("currentpagenumber"));
     
@@ -395,7 +396,7 @@ function ChangePage(e)
         //var curPageNumber = $templateRootObj.data("currentpagenumber");
         var curSortBy = curTemplateData.CurSortByField; //$templateRootObj.data("currentsortbyfield");//whatever the current value of default is
         //console.log("Changing page: ");    
-        getData(templateIdWithNoHash, curSortBy, pageSize, intCurrentPageNumber, pageSizeServerSideParam, curPageServerSideParam);
+        getData(templateIdWithNoHash, curSortBy, pageSize, intCurrentPageNumber, pageSizeServerSideParam, curPageServerSideParam,curFilter);
         $templateRootObj.data("currentpagenumber", intCurrentPageNumber);
     
     }
