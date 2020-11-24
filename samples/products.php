@@ -12,6 +12,7 @@ try{
 
     $filterbyProduct = '';
     $filterbyStore = '';
+    $filterbyPrice = '';
     if(isset($_REQUEST['filterbyProduct'])  )
     {
         if ($_REQUEST['filterbyProduct'] != "") 
@@ -25,6 +26,13 @@ try{
         if($_REQUEST['filterbyStore'] != "")
         {
             $filterbyStore = $_REQUEST['filterbyStore'];
+        }
+    }
+    if(isset($_REQUEST['filterbyPrice']))
+    {
+        if($_REQUEST['filterbyPrice'] != "")
+        {
+            $filterbyPrice = $_REQUEST['filterbyPrice'];
         }
     }
 
@@ -75,7 +83,18 @@ try{
         }
         $whereclause .= "store_name like '%$filterbyStore%'";
     }
-
+    if($filterbyPrice !='')
+    {
+        if($whereclause=="")
+        {
+            $whereclause .= " where ";
+        }
+        else
+        {
+            $whereclause .= " and ";
+        }
+        $whereclause .= "price = $filterbyPrice";
+    }
     $rs = mysql_query("select count(*) from fatima_products $whereclause");
     $totalCountsRow = mysql_fetch_row($rs);
     $totalCountVal = $totalCountsRow[0];
