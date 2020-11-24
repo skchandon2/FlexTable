@@ -363,7 +363,12 @@ function createPaginationButtons(paramTargetElemId, paramTemplateElementId)
     var pageBtnCount = Math.ceil(curTotalRowCount/curPageSize);
     
     var $pageBtnGroup = $("<div/>").addClass("col-sm-12 form-inline");
-    $pageBtnGroup.append($btnPrev);
+
+    if (curTemplateData.CurPageNumber > 1)
+    {
+        $pageBtnGroup.append($btnPrev);
+    }
+    
     
     var $pageBtnScrollGroup = $("<div/>").css({"display":"block", "overflow-x":"scroll", "overflow-y":"none", "max-width":"300px", "height":"60px"});
     var $pageBtnScrollGroupInner = $("<div/>").addClass("btn-group");
@@ -387,7 +392,11 @@ function createPaginationButtons(paramTargetElemId, paramTemplateElementId)
     }
     $pageBtnScrollGroup.append($pageBtnScrollGroupInner);
     $pageBtnGroup.append($pageBtnScrollGroup);
-    $pageBtnGroup.append($btnNext).css({"text-align": "right"})
+    if (curTemplateData.CurPageNumber < pageBtnCount)
+    {
+        $pageBtnGroup.append($btnNext).css({"text-align": "right"});
+    }
+    
     $btnRow
         //.append($btnCell1)
         .append($pageBtnGroup);
