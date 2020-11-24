@@ -12,6 +12,7 @@ try{
 
     $filterbynationality = '';
     $filterbyposition = '';
+    $filterbyage = 0;
     if(isset($_REQUEST['filterbynationality'])  )
     {
         if ($_REQUEST['filterbynationality'] != "") 
@@ -26,6 +27,15 @@ try{
         if ($_REQUEST['filterbyposition'] != "") 
         {
             $filterbyposition = $_REQUEST['filterbyposition'];
+        }
+        
+    }
+
+    if(isset($_REQUEST['filterbyage'])  )
+    {
+        if ($_REQUEST['filterbyage'] != "") 
+        {
+            $filterbyage = $_REQUEST['filterbyage'];
         }
         
     }
@@ -77,6 +87,20 @@ try{
         }
 
         $whereclause .= "position like '%$filterbyposition%'";
+    }
+    
+    if($filterbyage!='')
+    {
+        if($whereclause=="")
+        {
+            $whereclause .= " where ";
+        }
+        else
+        {
+            $whereclause .= " and ";
+        }
+
+        $whereclause .= "age = $filterbyage";
     }
     
     $rs = mysql_query("select count(*) from mr_chelsea_players $whereclause");

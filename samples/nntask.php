@@ -12,6 +12,8 @@ try{
 
     $taskfilter = '';
     $itemfilter = '';
+    $lengthfilter = 0;
+
     if(isset($_REQUEST['taskfilter'])  )
     {
         if ($_REQUEST['taskfilter'] != "") 
@@ -26,6 +28,15 @@ try{
         if ($_REQUEST['itemfilter'] != "") 
         {
             $itemfilter = $_REQUEST['itemfilter'];
+        }
+        
+    }
+
+    if(isset($_REQUEST['lengthfilter'])  )
+    {
+        if ($_REQUEST['lengthfilter'] != "") 
+        {
+            $lengthfilter = $_REQUEST['lengthfilter'];
         }
         
     }
@@ -80,6 +91,21 @@ try{
 
         $whereclause .= "itemname like '%$itemfilter%'";
     }
+
+    if($lengthfilter!='')
+    {
+        if($whereclause=="")
+        {
+            $whereclause .= " where ";
+        }
+        else
+        {
+            $whereclause .= " and ";
+        }
+
+        $whereclause .= "tasklength = $lengthfilter";
+    }
+    
     $rs = mysql_query("select count(*) from nn_list $whereclause");
     $totalCountsRow = mysql_fetch_row($rs);
     $totalCountVal = $totalCountsRow[0];
