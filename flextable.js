@@ -164,11 +164,18 @@
                 var $templateRootElement = $childElemsx.parent();
 
                 $filterInputBox = $("<input/>").attr("type","text")
-                .data({"filterbyserversideparam":$curTemplateChildElement.data("filterbyserverparam"),"templateid": $templateRootElement.attr("id")});
+                .data(
+                        {"filterbyserversideparam":$curTemplateChildElement.data("filterbyserverparam"),
+                        "templateid": $templateRootElement.attr("id")
+                        }
+                    )
+                .keydown(filterBtnClickHandler)
+                .css({"margin-left": "10px"})
+                    ;
                 
-                $filterBtn = $("<button/>").addClass("btn btn-primary").text("Search")
-                .data("relatedinput",$filterInputBox)
-                .click(filterBtnClickHandler);
+                //$filterBtn = $("<button/>").addClass("btn btn-primary").text("Search")
+                //.data("relatedinput",$filterInputBox)
+                //.click(filterBtnClickHandler);
 
                 //Iterate through all the filters currently attached to the root element.
                 //  Then check if the current child element's filterbyserverside param is the same.
@@ -188,16 +195,24 @@
 
             var $thcell1 = $("<th/>").append($headerText).addClass("text-primary");
             $thcell1.append($filterInputBox);
-            $thcell1.append($filterBtn);
+            //$thcell1.append($filterBtn);
             $hdrtrx.append($thcell1);
         });//(End Of) $.each (filterInputValx ..
     }//(End Of) populateHeaderCells
 
     function filterBtnClickHandler(e)
     {
-        e.preventDefault();
-        var $curBtn = $(this);
-        var $relatedFilterInput = $($curBtn.data("relatedinput"));
+        if ( e.which == 13 ) {
+            e.preventDefault();
+        }
+        else
+        {
+            return;
+        }
+        //e.preventDefault();
+        //var $curBtn = $(this);
+        //var $relatedFilterInput = $($curBtn.data("relatedinput"));
+        var $relatedFilterInput = $(this);
         var inputFilterServerSideParam = $relatedFilterInput.data("filterbyserversideparam");        
         var inputFilterText = $relatedFilterInput.val();
         var filterObj = {[inputFilterServerSideParam+""]: inputFilterText};
