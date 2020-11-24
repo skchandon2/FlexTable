@@ -12,6 +12,7 @@ try{
 
     $filterbyauthor = '';
     $filterbypublisher = '';
+    $filterbyyear = 0;
     if(isset($_REQUEST['filterbyauthor'])  )
     {
         if ($_REQUEST['filterbyauthor'] != "") 
@@ -26,6 +27,15 @@ try{
         if ($_REQUEST['filterbypublisher'] != "") 
         {
             $filterbypublisher = $_REQUEST['filterbypublisher'];
+        }
+        
+    }
+
+    if(isset($_REQUEST['filterbyyear'])  )
+    {
+        if ($_REQUEST['filterbyyear'] != "") 
+        {
+            $filterbyyear = $_REQUEST['filterbyyear'];
         }
         
     }
@@ -78,7 +88,37 @@ try{
         $whereclause .= "publishername like '%$filterbypublisher%'";
     }
 
-    $rs = mysql_query("select count(*) from scbooks $whereclause");
+    if($filterbyyear!='')
+    {
+        if($whereclause=="")
+        {
+            $whereclause .= " where ";
+        }
+        else
+        {
+            $whereclause .= " and ";
+        }
+        $opexists_gt = strpos($filterbyyear, '>');
+        $opexists_lt = strpos($filterbyyear, '<');
+        
+        if($opexists_gt !== FALSE)
+        {
+            $whereclause .= "pubilshyear $filterbyyear";
+        }
+        else if($opexists_lt !== FALSE)
+        {
+            $whereclause .= "pubilshyear $filterbyyear";
+        }
+        else
+        {
+            $whereclause .= "pubilshyear = $filterbyyear";
+        }
+        
+    }
+
+    $strSql = "select count(*) from scbooks $whereclause";
+    //print $strSql;
+    $rs = mysql_query($strSql);
     $totalCountsRow = mysql_fetch_row($rs);
     $totalCountVal = $totalCountsRow[0];
     //echo $totalCountVal;
