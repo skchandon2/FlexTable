@@ -6,7 +6,8 @@
 try{
     include 'dbconn.php';
 
-    $sort = 'pubilshyear';    
+    $sort = 'pubilshyear'; 
+    $sortbydirection = '';
     $pagesizeStr = '5';
     $curpageNumberStr = '1';
 
@@ -45,10 +46,27 @@ try{
         if ($_REQUEST['sort'] != "") 
         {
             $sort = $_REQUEST['sort'];
+            
+            if(isset($_REQUEST['sortbydirection'])  )
+            {
+                if ($_REQUEST['sortbydirection'] != "") 
+                {
+                    $sortbydirection = $_REQUEST['sortbydirection'];
+                    if($sortbydirection=="asc")
+                    {
+                        $sort .= " asc";
+                    }
+                    else if($sortbydirection=="desc")
+                    {
+                        $sort .= " desc";
+                    }
+                }
+                
+            }
         }
         
     }
-    
+
     if(isset($_REQUEST["pagesize"]))
     {
         $pagesizeStr = $_REQUEST["pagesize"];
@@ -125,8 +143,9 @@ try{
 
     //$finalResult = array();
     $result = array();
-    
-    $recordset = mysql_query("select * from scbooks $whereclause order by $sort limit $recordStartIndex, $pagesizeInt") or die ("{ error: " . mysql_error() . "}");
+    $strSql2 = "select * from scbooks $whereclause order by $sort limit $recordStartIndex, $pagesizeInt";
+    //print $strSql2;
+    $recordset = mysql_query($strSql2) or die ("{ error: " . mysql_error() . "}");
     while($row = mysql_fetch_object($recordset)){
         array_push($result, $row);
     }

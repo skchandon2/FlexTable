@@ -31,16 +31,19 @@
         data-nodepath = "root.Records.Details" 
         data-totalrowcountpath = "root.TotalRowCount"
         data-sortbyserversideparam="sort" 
+        data-sortbydirserversideparam="sortbydirection"
         data-targetid="dynamicTable" 
         data-pagesize="5"
         data-pagesizeserversideparam="pagesize"
         data-currentpageserversideparam="curpage"
-        data-defaultsortbyfield="authorname"
-        
+        data-defaultsortbyfield="pubilshyear"
+        data-sortbydesckeyword="desc"
+        data-sortbyasckeyword="asc"
+        data-defaultsortbydir = "asc"
         >
         
-        <li data-jsonfieldname="authorname" data-sortby="authorname"  data-filterbyserverparam="filterbyauthor">Name</li>
-        <li data-jsonfieldname="bookname" data-sortby="bookname">Age</li>
+        <li data-jsonfieldname="authorname" data-sortby="authorname"  data-filterbyserverparam="filterbyauthor">Author Name</li>
+        <li data-jsonfieldname="bookname" data-sortby="bookname">Book Name</li>
         <li data-jsonfieldname="pubilshyear" data-sortby="pubilshyear" data-filterbyserverparam="filterbyyear">Publish Year</li>
         
     </ul>

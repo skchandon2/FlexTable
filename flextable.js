@@ -17,10 +17,12 @@
             var pageSizeServerSideParam = curTemplateData.PageSizeServerSideParam;//$templateRootObj.data("pagesizeserversideparam");
             var curPageServerSideParam = curTemplateData.CurPageServerSideParam;//$templateRootObj.data("currentpageserversideparam");
             var defaultSortByField = curTemplateData.DefaultSortByField;//$templateRootObj.data("defaultsortbyfield");
-
+            var defaultSortByDir = curTemplateData.DefaultSortByDir;//$templateRootObj.data("defaultsortbyfield");
+            //console.log(defaultSortByDir)
             //console.log($(templatex).attr("id"));
-            getData(templateRootId, defaultSortByField, pageSize, currentPageNumber, pageSizeServerSideParam, curPageServerSideParam);
+            getData(templateRootId, defaultSortByField, defaultSortByDir,  pageSize, currentPageNumber, pageSizeServerSideParam, curPageServerSideParam);
             $templateRootObj.data("currentsortbyfield", defaultSortByField);
+            $templateRootObj.data("currentsortbydir", defaultSortByDir);
         });
         //_getDataURL = $("#itemsList").data("getdataurl");
         //getData("#itemsList");
@@ -28,7 +30,7 @@
         
     });
     
-    function getData(strTemplateElementID, paramSortBy="", paramPageSize=5, paramCurPage=1, paramPageSizeServerSideVar="", paramCurPageServerSideVar="", paramFilterObj=null)
+    function getData(strTemplateElementID, paramSortBy="", paramSortByDir="", paramPageSize=5, paramCurPage=1, paramPageSizeServerSideVar="", paramCurPageServerSideVar="", paramFilterObj=null)
     {
         
         var templateElementId = "#" + strTemplateElementID;
@@ -36,6 +38,7 @@
         var $templateElementObj = $(templateElementId);
         var curTemplateData = GetDataFromTemplateRoot($templateElementObj);
         var sortByServerSideParamName = curTemplateData.SortByServerSideParam;
+        var sortByDirServerSideParamName = curTemplateData.SortByDirServerSideParam;
         var curUrl = curTemplateData.GetDataUrl;
         var curPagesize = paramPageSize;
         var getDataParams = {[sortByServerSideParamName+""]: paramSortBy}; 
@@ -46,6 +49,10 @@
         if(paramCurPageServerSideVar!="")
         {
             getDataParams[paramCurPageServerSideVar] = paramCurPage;
+        }
+        if(paramSortByDir != "")
+        {
+            getDataParams[sortByDirServerSideParamName] = paramSortByDir;
         }
         console.log(paramFilterObj);
         if(paramFilterObj!=null)
@@ -146,13 +153,32 @@
             var $headerText = null;
             var $filterInputBox = null;
             var $filterBtn = null;
+            var $curTemplateRootObj = $childElemsx.parent();
+            var curTemplateData = GetDataFromTemplateRoot($curTemplateRootObj);
             if($curTemplateChildElement.data("sortby") != null)
             {
+                var $curSortDirSymbol = null;
+                if(curTemplateData.CurSortByField == $curTemplateChildElement.data("sortby"))
+                {
+                    if(curTemplateData.CurSortByDir != null)
+                    {
+                        console.log(curTemplateData.CurSortByDir)
+                        if(curTemplateData.CurSortByDir!=curTemplateData.SortByAscKeyword)
+                        {
+                            $curSortDirSymbol = $("<i></i>").html("&darr;").css({"margin-left":"3px"});
+                        }
+                        else if (curTemplateData.CurSortByDir!=curTemplateData.SortByDescKeyword)
+                        {
+                            $curSortDirSymbol = $("<i></i>").html("&uarr;").css({"margin-left":"3px"});
+                        }
+                    }
+                }
                 $headerText = $("<a></a>")
                     .attr("href", "#")
                     .html($curTemplateChildElement.html())
                     .click(headerSortHandler)
-                    .data({"sortbyfield": $curTemplateChildElement.data("sortby"), "templateid": $childElemsx.parent().attr("id")});
+                    .data({"sortbyfield": $curTemplateChildElement.data("sortby"), "templateid": $curTemplateRootObj.attr("id")})
+                    .append($curSortDirSymbol)
                     ;
             }
             else
@@ -227,6 +253,7 @@
         var pageSizeServerSideParam = curTemplateData.PageSizeServerSideParam; //$templateRootObj.data("pagesizeserversideparam");
         var curPageServerSideParam = curTemplateData.CurPageServerSideParam; //$templateRootObj.data("currentpageserversideparam");
         var curSortBy = curTemplateData.CurSortByField;
+        var curSortByDir = curTemplateData.CurSortByDir;
         
         var arrFilters = [];
         arrFilters = curTemplateData.CurSearchFilter;
@@ -236,7 +263,8 @@
 
         getData(
                 templateRootId,
-                curSortBy,  
+                curSortBy,
+                curSortByDir,   
                 pageSize, 
                 intCurrentPageNumber, 
                 pageSizeServerSideParam, 
@@ -327,7 +355,7 @@
 function headerSortHandler(e)
 {
     e.preventDefault(); 
-    var curSortBy = $(this).data("sortbyfield");
+    var newSortBy = $(this).data("sortbyfield");
     var curTemplateId = $(this).data("templateid");
     var $templateRootObj = $("#" + curTemplateId);
     var curTemplateData = GetDataFromTemplateRoot($templateRootObj);
@@ -336,15 +364,34 @@ function headerSortHandler(e)
     var pageSizeServerSideParam = curTemplateData.PageSizeServerSideParam; //$templateRootObj.data("pagesizeserversideparam");
     var curPageServerSideParam = curTemplateData.CurPageServerSideParam; //$templateRootObj.data("currentpageserversideparam");
     var curPageNumber = curTemplateData.CurPageNumber; //$templateRootObj.data("currentpagenumber");
-    console.log(pageSizeServerSideParam);    
+
+    var CurSortBy = curTemplateData.CurSortByField;
+    
+    var curSortByDir = curTemplateData.CurSortByDir;
+    var newSortByDir = curSortByDir;
+    if(newSortBy == CurSortBy)
+    {
+        if(curSortByDir == curTemplateData.SortByDescKeyword)
+        {
+            newSortByDir = curTemplateData.SortByAscKeyword;
+        }
+        else
+        {
+            newSortByDir = curTemplateData.SortByDescKeyword;
+        }
+    }
+
+
     getData(
             curTemplateId, 
-            curSortBy, 
+            newSortBy,
+            newSortByDir, 
             pageSize, 
             curPageNumber, 
             pageSizeServerSideParam, 
             curPageServerSideParam, curFilter);
-    $templateRootObj.data("currentsortbyfield", curSortBy);
+    $templateRootObj.data("currentsortbyfield", newSortBy);
+    $templateRootObj.data("currentsortbydir", newSortByDir);
 }//(End Of) Function headerSortHandler
 
 function createPaginationButtons(paramTargetElemId, paramTemplateElementId)
@@ -446,8 +493,10 @@ function ChangePage(e)
         var curPageServerSideParam = curTemplateData.CurPageServerSideParam; //$templateRootObj.data("currentpageserversideparam");
         //var curPageNumber = $templateRootObj.data("currentpagenumber");
         var curSortBy = curTemplateData.CurSortByField; //$templateRootObj.data("currentsortbyfield");//whatever the current value of default is
+        var curSortByDir = curTemplateData.CurSortByDir;
+        
         //console.log("Changing page: ");    
-        getData(templateIdWithNoHash, curSortBy, pageSize, intCurrentPageNumber, pageSizeServerSideParam, curPageServerSideParam,curFilter);
+        getData(templateIdWithNoHash, curSortBy,curSortByDir, pageSize, intCurrentPageNumber, pageSizeServerSideParam, curPageServerSideParam,curFilter);
         $templateRootObj.data("currentpagenumber", intCurrentPageNumber);
     
     }
@@ -462,9 +511,14 @@ function GetDataFromTemplateRoot($paramTemplateRootObject)
     var pageSizeServerSideParam = $paramTemplateRootObject.data("pagesizeserversideparam");
     var curPageServerSideParam = $paramTemplateRootObject.data("currentpageserversideparam");
     var defaultSortByField = $paramTemplateRootObject.data("defaultsortbyfield");
+    var sortByDescKeyword = $paramTemplateRootObject.data("sortbydesckeyword");
+    var sortByAscKeyword = $paramTemplateRootObject.data("sortbyasckeyword");
+    var defaultSortByDir = $paramTemplateRootObject.data("defaultsortbydir");        
     var curSortByField = $paramTemplateRootObject.data("currentsortbyfield")
+    var curSortByDir = $paramTemplateRootObject.data("currentsortbydir")
     var curPageNumber = $paramTemplateRootObject.data("currentpagenumber")
     var sortByServerSideParam = $paramTemplateRootObject.data("sortbyserversideparam")
+    var sortByDirServerSideParam = $paramTemplateRootObject.data("sortbydirserversideparam")
     var getDataUrl = $paramTemplateRootObject.data("getdataurl")
     var getDataNode = $paramTemplateRootObject.data("nodepath");
     var getDataTotal = $paramTemplateRootObject.data("totalrowcountpath");
@@ -473,15 +527,21 @@ function GetDataFromTemplateRoot($paramTemplateRootObject)
     var arrChildElements = $paramTemplateRootObject.find("li");
     var curSearchFilter = $paramTemplateRootObject.data("currentsearchfilter");
     
+    
 
     return {
         PageSize: pageSize, 
         PageSizeServerSideParam: pageSizeServerSideParam, 
         CurPageServerSideParam: curPageServerSideParam, 
-        DefaultSortByField: defaultSortByField,
+        DefaultSortByField: defaultSortByField,  
+        SortByDescKeyword: sortByDescKeyword,
+        SortByAscKeyword: sortByAscKeyword,
+        DefaultSortByDir: defaultSortByDir,
         CurSortByField: curSortByField,
+        CurSortByDir: curSortByDir,
         CurPageNumber: curPageNumber,
         SortByServerSideParam: sortByServerSideParam,
+        SortByDirServerSideParam: sortByDirServerSideParam,
         GetDataUrl: getDataUrl,
         GetDataNodePath: getDataNode,
         GetDataTotalPath: getDataTotal,
